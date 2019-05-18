@@ -6,7 +6,7 @@
 * ptype 视频父类型
 * ctype 视频子类型
 * desc 视频描述
-* created_time 创建时间
+* upload_time 视频上传时间
 * spider_get_time 爬虫首次抓取时间
 * author_name 作者名
 * author_id 作者id
@@ -53,6 +53,7 @@
 * play_count 播放量
 * charger_count 作者充电数量
 * videos_count 视频数量
+* spider_update_time 抓取此次增量的时间
 
 ## 作者视频数据表
 
