@@ -17,14 +17,14 @@ def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: s
 
 
 def create_videos_increment_item(vid: int, danmu_count: int, play_count: int, reply_count: int,
-                                 like_count: int, coin_count: int, collect_count: int, charger_count: int):
+                                 like_count: int, coin_count: int, collect_count: int, share_count: int):
     _cur.execute(
         """
         insert into videos_increment 
-        (vid, danmu_count, play_count, reply_count, like_count, coin_count, collect_count, charger_count)
-        values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        (vid, danmu_count, play_count, reply_count, like_count, coin_count, collect_count, share_count)
+        values (%s, %s, %s, %s, %s, %s, %s, %s)
         """,
-        (vid, danmu_count, play_count, reply_count, like_count, coin_count, collect_count, charger_count)
+        (vid, danmu_count, play_count, reply_count, like_count, coin_count, collect_count, share_count)
     )
     _conn.commit()
 
@@ -34,7 +34,7 @@ def create_videos_related_item(vid: int, related_vid: int):
         """
         insert into videos_related
         (vid, related_vid)
-        values (%s, %s, %s)
+        values (%s, %s)
         """,
         (vid, related_vid)
     )
