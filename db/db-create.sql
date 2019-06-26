@@ -26,14 +26,14 @@ create table videos_increment
     like_count         int,
     coin_count         int,
     collect_count      int,
-    charger_count      int
+    share_count        int
 );
 
 create table videos_related
 (
     id          serial,
     vid         int,
-    related_vid int
+    related_vid int[]
 );
 
 

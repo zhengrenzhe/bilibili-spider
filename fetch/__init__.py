@@ -1,1 +1,1 @@
-from fetch.video_page import fetch_page
+from fetch.video_page import fetch_video_page
