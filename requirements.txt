@@ -7,6 +7,7 @@ pika==1.0.1
 post==2019.4.13
 psycopg2-binary==2.8.2
 public==2019.4.13
+python-logstash==0.4.6
 query-string==2019.4.13
 request==2019.4.13
 requests==2.22.0

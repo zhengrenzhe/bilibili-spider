@@ -20,7 +20,7 @@ _create_rabbitmq:
 
 
 _create_elk:
-	docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -idt --name elk sebp/elk:720
+	docker run -p 5601:5601 -p 9200:9200 -p 9300:9300 -p 5044:5044 -v "$PWD"/config/logstash:/etc/logstash -idt --name elk sebp/elk:720
 
 
 create_containers: _create_postgres _create_rabbitmq _create_redis _create_elk
