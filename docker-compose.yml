@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+
+  redis:
+    image: "redis:5.0.5"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "~/docker-data/redis:/data"
+    entrypoint: "redis-server --appendonly yes"
+
+
+  rabbitmq:
+    image: "rabbitmq:3.7.15"
+    ports:
+      - "5672:5672"
+
+
+  postgres:
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "~/docker-data/postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=1234
+
+
+  elk:
+    image: "sebp/elk:720"
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "9300:9300"
+      - "5044:5044"
+    volumes:
+      - "$PWD/config/logstash:/etc/logstash"
