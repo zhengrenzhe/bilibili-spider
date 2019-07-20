@@ -1,6 +1,8 @@
 from random import choice
 import requests
 
+import log
+
 UA = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15",
@@ -20,7 +22,11 @@ HEADERS = {
 
 
 def get(url: str):
+    log.info("Start HTTP request", {"url": url})
+
     r = requests.get(url, headers=HEADERS)
     r.encoding = "utf-8"
+
+    log.info("Finished HTTP request", {"url": url, "status_code": r.status_code})
 
     return r.text

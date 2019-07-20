@@ -1,8 +1,11 @@
 from fetch import fetch_video_page
 from db.video import create_videos_item, create_videos_increment_item, create_videos_related_item
+import log
 
 
 def work(url: str):
+    log.info("Start new video page url job", {"url": url})
+
     video_base, video_increment, video_related = fetch_video_page(url)
 
     create_videos_item(vid=video_base.vid, title=video_base.title, ptype=video_base.ptype, ctype=video_base.ctype,

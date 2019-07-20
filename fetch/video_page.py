@@ -7,6 +7,7 @@ import lxml.html
 
 from utils.request import get
 from model.video import Video, VideoIncrement, VideoRelated
+import log
 
 
 def _extract_base_info(video_data):
@@ -39,6 +40,8 @@ def _extract_increment_info(vid: int, video_data):
 
 
 def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
+    log.info("Start parse video page data", {"url": url})
+
     vid = re.search(r"video/av(\d+)", url).groups()[0]
 
     video_data = get("https://api.bilibili.com/x/web-interface/view?aid=%s" % vid)
@@ -61,5 +64,7 @@ def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
     related_videos = video_dom.xpath("//*[contains(@class,'video-page-card')]//div[@class='info']/a/@href")
     video_related_info = VideoRelated(vid=vid, related_vid=[int(re.search(r"video/av(\d+)", v).groups()[0]) for v in
                                                             related_videos])
+
+    log.info("Finished parse video page data", {"url": url})
 
     return video_base_info, video_increment_info, video_related_info
