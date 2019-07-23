@@ -20,5 +20,9 @@ def work(url: str):
 
     create_videos_related_item(vid=video_related.vid, related_vid=video_related.related_vid)
 
+    for r_vid in video_related.related_vid:
+        r_url = "https://www.bilibili.com/video/av%s" % r_vid
+        log.info("Add related video", {"url": r_url})
 
-work("https://www.bilibili.com/video/av56617044/?spm_id_from=333.334.b_63686965665f7265636f6d6d656e64.21")
+
+work("https://www.bilibili.com/video/av55731626?spm_id_from=333.334.b_62696c695f746563686e6f6c6f6779.4")
