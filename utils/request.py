@@ -1,4 +1,6 @@
 from random import choice
+
+from pycookiecheat import chrome_cookies
 import requests
 
 import log
@@ -24,7 +26,9 @@ HEADERS = {
 def get(url: str):
     log.info("Start HTTP request", {"url": url})
 
-    r = requests.get(url, headers=HEADERS)
+    cookies = chrome_cookies("https://www.bilibili.com")
+
+    r = requests.get(url, headers=HEADERS, cookies=cookies)
     r.encoding = "utf-8"
 
     log.info("Finished HTTP request", {"url": url, "status_code": r.status_code})
