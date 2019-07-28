@@ -1,4 +1,5 @@
 appnope==0.1.0
+APScheduler==3.6.1
 backcall==0.1.0
 certifi==2019.3.9
 chardet==3.0.4
@@ -23,10 +24,12 @@ pycookiecheat==0.4.3
 pycrypto==2.6.1
 Pygments==2.4.2
 python-logstash==0.4.6
+pytz==2019.1
 query-string==2019.4.13
 request==2019.4.13
 requests==2.22.0
 six==1.12.0
 traitlets==4.3.2
+tzlocal==2.0.0
 urllib3==1.25.2
 wcwidth==0.1.7

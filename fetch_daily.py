@@ -50,6 +50,3 @@ def work():
                         log.info("Fetching newlist stopped", {"url": daily_url})
                         next_page = False
                         break
-
-
-work()
