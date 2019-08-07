@@ -1,24 +1,31 @@
 import lxml.html
 import datetime
+import json
 
 import log
+from mq import MQ
 from utils import request
+
+MAX_DAILY_PAGER = 5000
+
+
+def make_daily_url(pager):
+    return "https://www.bilibili.com/newlist.html?page=%s" % pager
 
 
 def work():
-    daily_url = "https://www.bilibili.com/newlist.html?page=1440"
-    next_page = True
+    daily_url_pager = 0
+    log.info("Start fetch lastday uploaded videos")
 
-    while next_page:
-        log.info("Fetching newlist", {"url": daily_url})
+    while daily_url_pager < MAX_DAILY_PAGER:
+        log.info("Fetching newlist", {"url": make_daily_url(daily_url_pager)})
 
-        daily_html = request.get(daily_url)
+        daily_html = request.get(make_daily_url(daily_url_pager))
         daily_dom = lxml.html.etree.HTML(daily_html)
         video_items = daily_dom.xpath("//*[contains(@class,'vd_list')]/li")
 
-        daily_url = "https://www.bilibili.com%s" % daily_dom.xpath("//*[contains(@class,'nextPage')]/@href")[0]
-
-        before_count = 0
+        print("cur page: %s" % make_daily_url(daily_url_pager))
+        daily_url_pager += 1
 
         for vi in video_items:
             date_str = vi.xpath("div[@class='w_info']/i[@class='date']/text()")
@@ -30,23 +37,16 @@ def work():
                 date_pub = datetime.datetime(now.year, int(date_pub_str[0]), int(date_pub_str[1]))
                 date_diff = (now - date_pub).days
 
-                # 今天
-                if date_diff == 0:
-                    pass
-
                 # 昨天
-                elif date_diff == 1:
+                if date_diff == 1:
                     video_url = "https://www.bilibili.com%s" % vi.xpath("a[@class='title']/@href")[0]
+                    MQ.send(json.dumps({"type": "video", "url": video_url}))
                     log.info("New video will in queue",
                              {"url": video_url, "date": date_pub,
                               "title": (vi.xpath("a[@class='title']/text()") or [""])[0]})
 
-                # 昨天之前
-                else:
-                    # 每页中有可能会混入昨天之前的视频，在每一页视频中昨天之前的占比70%以上才停止抓新视频
-                    before_count += 1
-                    print((before_count / len(video_items)))
-                    if (before_count / len(video_items)) > 0.7:
-                        log.info("Fetching newlist stopped", {"url": daily_url})
-                        next_page = False
-                        break
+    log.info("Fetching newlist stopped")
+
+
+if __name__ == "__main__":
+    work()

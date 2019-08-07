@@ -48,7 +48,7 @@ def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
     video_data = json.loads(video_data)
 
     video_base_info = _extract_base_info(video_data)
-    video_increment_info = _extract_increment_info(vid, video_data)
+    video_increment_info = _extract_increment_info(int(vid), video_data)
 
     video_html = get(url)
     video_dom = lxml.html.etree.HTML(video_html)
@@ -62,8 +62,9 @@ def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
         video_base_info.tags = tags
 
     related_videos = video_dom.xpath("//*[contains(@class,'video-page-card')]//div[@class='info']/a/@href")
-    video_related_info = VideoRelated(vid=vid, related_vid=[int(re.search(r"video/av(\d+)", v).groups()[0]) for v in
-                                                            related_videos])
+    video_related_info = VideoRelated(vid=int(vid),
+                                      related_vid=[int(re.search(r"video/av(\d+)", v).groups()[0]) for v in
+                                                   related_videos])
 
     log.info("Finished parse video page data", {"url": url})
 

@@ -1,6 +1,8 @@
 from fetch import fetch_video_page
 from db.video import create_videos_item, create_videos_increment_item, create_videos_related_item
 import log
+import json
+from mq import MQ
 
 
 def work(url: str):
@@ -22,4 +24,9 @@ def work(url: str):
 
     for r_vid in video_related.related_vid:
         r_url = "https://www.bilibili.com/video/av%s" % r_vid
+        MQ.send(json.dumps({"type": "video", "url": r_url}))
         log.info("Add related video", {"url": r_url})
+
+
+if __name__ == "__main__":
+    work("https://www.bilibili.com/video/av48401550?spm_id_from=333.334.b_62696c695f646f756761.5")

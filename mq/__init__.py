@@ -8,7 +8,7 @@ chan.queue_declare(queue='video_urls')
 
 class MQ:
     @staticmethod
-    def send(msg: str):
+    def send(msg):
         chan.basic_publish(exchange='', routing_key='video_urls', body=msg)
 
     @staticmethod
@@ -17,3 +17,10 @@ class MQ:
                            auto_ack=True,
                            on_message_callback=callback)
         chan.start_consuming()
+
+
+def create_connect():
+    con = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
+    cha = con.channel()
+    cha.queue_declare(queue='video_urls')
+    return cha
