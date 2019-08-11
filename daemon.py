@@ -1,10 +1,11 @@
 import json
 from multiprocessing import Process
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from mq import create_connect
 import fetch_daily
 import video_listener
+from mq import create_connect
 
 
 def daily_videos():
@@ -18,9 +19,9 @@ daily_process.start()
 
 
 def url_job(ch, method, properties, body):
-    print(body)
     b = json.loads(body)
     if b["type"] == "video":
+        print(b["url"])
         video_listener.work(b["url"])
 
 

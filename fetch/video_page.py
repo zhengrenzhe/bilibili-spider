@@ -5,9 +5,9 @@ from typing import Tuple
 
 import lxml.html
 
-from utils.request import get
-from model.video import Video, VideoIncrement, VideoRelated
 import log
+from model.video import Video, VideoIncrement, VideoRelated
+from utils.request import get
 
 
 def _extract_base_info(video_data):
@@ -45,6 +45,11 @@ def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
     vid = re.search(r"video/av(\d+)", url).groups()[0]
 
     video_data = get("https://api.bilibili.com/x/web-interface/view?aid=%s" % vid)
+    if not video_data:
+        print("not res data")
+        log.error("Video page has None response", {"url": url})
+        return None, None, None
+
     video_data = json.loads(video_data)
 
     video_base_info = _extract_base_info(video_data)
