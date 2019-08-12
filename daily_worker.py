@@ -13,7 +13,7 @@ def make_daily_url(pager):
     return "https://www.bilibili.com/newlist.html?page=%s" % pager
 
 
-def work():
+def do():
     log.info(log.TARGET_DAILY_PAGER, "Start fetch last day uploaded videos")
 
     while redis.Context.daily_pager_index < MAX_DAILY_PAGER:
@@ -47,4 +47,4 @@ def work():
 
 
 if __name__ == "__main__":
-    work()
+    do()

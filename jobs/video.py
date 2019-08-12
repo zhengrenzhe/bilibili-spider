@@ -2,14 +2,14 @@ import json
 
 import log
 from db.video import create_videos_item, create_videos_increment_item, create_videos_related_item
-from fetch import fetch_video_page
 from mq import MQ
+from parse import parse_video_page
 
 
 def work(url: str):
     log.info("Start new video page url job", {"url": url})
 
-    video_base, video_increment, video_related = fetch_video_page(url)
+    video_base, video_increment, video_related = parse_video_page(url)
 
     if not video_base:
         return

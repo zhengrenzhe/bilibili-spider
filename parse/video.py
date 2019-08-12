@@ -39,7 +39,7 @@ def _extract_increment_info(vid: int, video_data):
     )
 
 
-def fetch_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
+def parse_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
     log.info("Start parse video page data", {"url": url})
 
     vid = re.search(r"video/av(\d+)", url).groups()[0]
