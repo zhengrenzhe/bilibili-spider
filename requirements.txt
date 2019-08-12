@@ -1,3 +1,4 @@
+redis
 PyYAML
 appnope==0.1.0
 APScheduler==3.6.1
