@@ -3,8 +3,7 @@ import json
 
 import lxml.html
 
-import log
-from mq import MQ
+from infrastructure import redis, log, rabbitmq
 from utils import request
 
 MAX_DAILY_PAGER = 5000
@@ -15,18 +14,18 @@ def make_daily_url(pager):
 
 
 def work():
-    daily_url_pager = 2205
-    log.info("Start fetch lastday uploaded videos")
+    log.info(log.TARGET_DAILY_PAGER, "Start fetch last day uploaded videos")
 
-    while daily_url_pager < MAX_DAILY_PAGER:
-        log.info("Fetching newlist", {"url": make_daily_url(daily_url_pager)})
+    while redis.Context.daily_pager_index < MAX_DAILY_PAGER:
 
-        daily_html = request.get(make_daily_url(daily_url_pager), 2)
+        log.info(log.TARGET_DAILY_PAGER, "Fetching new list", {"url": make_daily_url(redis.Context.daily_pager_index)})
+
+        daily_html = request.get(make_daily_url(redis.Context.daily_pager_index), 0.5)
         daily_dom = lxml.html.etree.HTML(daily_html)
         video_items = daily_dom.xpath("//*[contains(@class,'vd_list')]/li")
 
-        print("cur page: %s" % make_daily_url(daily_url_pager))
-        daily_url_pager += 1
+        print("cur page: %s" % make_daily_url(redis.Context.daily_pager_index))
+        redis.Context.daily_pager_index += 1
 
         for vi in video_items:
             date_str = vi.xpath("div[@class='w_info']/i[@class='date']/text()")
@@ -38,11 +37,13 @@ def work():
             date_pub = datetime.datetime(now.year, int(date_pub_str[0]), int(date_pub_str[1]))
 
             video_url = "https://www.bilibili.com%s" % vi.xpath("a[@class='title']/@href")[0]
-            MQ.send(json.dumps({"type": "video", "url": video_url}))
-            log.info("New video will in queue", {"url": video_url, "date": date_pub,
-                                                 "title": (vi.xpath("a[@class='title']/text()") or [""])[0]})
+            rabbitmq.send(json.dumps({"type": "video", "url": video_url}))
 
-    log.info("Fetching newlist stopped")
+            log.info(log.TARGET_DAILY_PAGER, "New video will in queue", {"url": video_url, "date": date_pub,
+                                                                         "title": (vi.xpath(
+                                                                             "a[@class='title']/text()") or [""])[0]})
+
+    log.info(log.TARGET_DAILY_PAGER, "Fetching new list stopped")
 
 
 if __name__ == "__main__":

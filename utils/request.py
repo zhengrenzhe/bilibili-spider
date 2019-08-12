@@ -1,13 +1,11 @@
 import gzip
 import time
-from os import path
 from random import choice
 from urllib import request, parse, error
 
 from pycookiecheat import chrome_cookies
-from yaml import load, Loader
 
-import log
+from infrastructure import log
 
 UA = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 "
@@ -28,17 +26,17 @@ HEADERS = {
     "User-Agent": choice(UA)
 }
 
-proxy_config = load(open(path.join(path.dirname(path.abspath(__file__)), "../proxy.yaml")), Loader=Loader)
-proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
-
-log.info("Use proxy: %s" % proxy_url)
-
-proxy_handler = request.ProxyHandler({
-    "http": proxy_url,
-    "https": proxy_url,
-})
-
-proxy_opener = request.build_opener(proxy_handler)
+# proxy_config = load(open(path.join(path.dirname(path.abspath(__file__)), "../proxy.yaml")), Loader=Loader)
+# proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
+#
+# log.info("Use proxy: %s" % proxy_url)
+#
+# proxy_handler = request.ProxyHandler({
+#     "http": proxy_url,
+#     "https": proxy_url,
+# })
+#
+# proxy_opener = request.build_opener(proxy_handler)
 # request.install_opener(proxy_opener)
 
 cookies = chrome_cookies("https://www.bilibili.com")
@@ -46,18 +44,17 @@ HEADERS["Cookie"] = ";".join(["%s=%s" % (k, cookies[k]) for k in cookies])
 
 
 def _get(url: str, retry_num: int):
-    log.info("Start HTTP request", {"url": url})
+    log.info(log.TARGET_HTTP, "Start HTTP request", {"url": url})
     if retry_num != 0:
-        log.info("Retry http get request", {"url": url, "retry_num": retry_num})
+        log.info(log.TARGET_HTTP, "Retry http get request", {"url": url, "retry_num": retry_num})
 
     HEADERS["Host"] = parse.urlparse(url).netloc
     req = request.Request(url, headers=HEADERS)
     res = request.urlopen(req)
     res_text = res.read()
 
-    print(res_text)
+    log.info(log.TARGET_HTTP, "Finished HTTP request", {"url": url, "status_code": res.status})
 
-    log.info("Finished HTTP request", {"url": url, "status_code": res.status})
     try:
         return gzip.decompress(res_text).decode("utf-8")
     except:
@@ -73,5 +70,5 @@ def get(url: str, timeout=0):
             return res_text
         except (error.URLError, error.HTTPError) as err:
             print(err)
-            log.error("HTTP get request error", {"url": url, "error": err})
+            log.error(log.TARGET_HTTP, "HTTP get request error", {"url": url, "error": err})
         i += 1
