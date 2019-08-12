@@ -5,7 +5,7 @@ from typing import Tuple
 
 import lxml.html
 
-import log
+from infrastructure import log
 from model.video import Video, VideoIncrement, VideoRelated
 from utils.request import get
 
@@ -40,14 +40,14 @@ def _extract_increment_info(vid: int, video_data):
 
 
 def parse_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
-    log.info("Start parse video page data", {"url": url})
+    log.info(log.TARGET_VIDEO_PAGE, "Start parse video page data", {"url": url})
 
     vid = re.search(r"video/av(\d+)", url).groups()[0]
 
     video_data = get("https://api.bilibili.com/x/web-interface/view?aid=%s" % vid)
     if not video_data:
         print("not res data")
-        log.error("Video page has None response", {"url": url})
+        log.error(log.TARGET_VIDEO_PAGE, "Video page has None response", {"url": url})
         return None, None, None
 
     video_data = json.loads(video_data)
@@ -71,6 +71,6 @@ def parse_video_page(url: str) -> Tuple[Video, VideoIncrement, VideoRelated]:
                                       related_vid=[int(re.search(r"video/av(\d+)", v).groups()[0]) for v in
                                                    related_videos])
 
-    log.info("Finished parse video page data", {"url": url})
+    log.info(log.TARGET_VIDEO_PAGE, "Finished parse video page data", {"url": url})
 
     return video_base_info, video_increment_info, video_related_info

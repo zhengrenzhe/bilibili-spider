@@ -1,3 +1,5 @@
+create database bilibili owner postgres;
+
 create table videos
 (
     id              serial,

@@ -11,6 +11,8 @@ TARGET_DATABASE = "Database"
 TARGET_DAILY_PAGER = "DailyPager"
 TARGET_HTTP = "HTTP"
 TARGET_RABBITMQ = "RabbitMQ"
+TARGET_VIDEO_PAGE = "VideoPage"
+TARGET_REDIS = "Redis"
 
 
 def make_extra(log_target: str, extra: Dict = None):
