@@ -1,10 +1,12 @@
 import json
 
-from infrastructure import log, rabbitmq
+from infrastructure import log, rabbitmq, redis
 from parse import parse_video_page
 
 
 def do(url: str):
+    redis.Context.visit(url)
+
     log.info(log.TARGET_VIDEO_PAGE, "Start new video page url job", {"url": url})
 
     suc, video_base, video_increment, video_related = parse_video_page(url)
@@ -19,8 +21,11 @@ def do(url: str):
 
     for r_vid in video_related.related_vid:
         r_url = "https://www.bilibili.com/video/av%s" % r_vid
-        rabbitmq.send(json.dumps({"type": "video", "url": r_url}))
-        log.info(log.TARGET_VIDEO_PAGE, "Add related video to queue", {"url": r_url})
+        if not redis.Context.is_visited(r_url):
+            rabbitmq.send(json.dumps({"type": "video", "url": r_url}))
+            log.info(log.TARGET_VIDEO_PAGE, "Add related video to queue", {"url": r_url})
+
+    log.info(log.TARGET_VIDEO_PAGE, "Finished new video page url job", {"url": url})
 
 
 if __name__ == "__main__":

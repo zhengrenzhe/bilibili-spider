@@ -1,7 +1,6 @@
 import json
 
-from infrastructure import log
-from infrastructure import rabbitmq
+from infrastructure import log, rabbitmq, redis
 from jobs import video
 
 
@@ -11,8 +10,12 @@ def url_job(ch, method, properties, body):
     log.info(log.TARGET_RABBITMQ, "Get message from rabbitbq", {"content": b})
 
     if b["type"] == "video":
-        print(b["url"])
-        video.do(b["url"])
+        url = b["url"]
+        if redis.Context.is_visited(url):
+            log.info(log.TARGET_REDIS, "Video page is visited, ignored", {"url": url})
+        else:
+            print(b["url"])
+            video.do(b["url"])
 
 
 conn = rabbitmq.open_connection()
