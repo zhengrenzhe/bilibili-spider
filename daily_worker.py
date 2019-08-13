@@ -20,7 +20,12 @@ def do():
 
         log.info(log.TARGET_DAILY_PAGER, "Fetching new list", {"url": make_daily_url(redis.Context.daily_pager_index)})
 
-        daily_html = request.get(make_daily_url(redis.Context.daily_pager_index), 0.5)
+        daily_html = request.get(make_daily_url(redis.Context.daily_pager_index))
+
+        if not daily_html:
+            print(daily_html)
+            continue
+
         daily_dom = lxml.html.etree.HTML(daily_html)
         video_items = daily_dom.xpath("//*[contains(@class,'vd_list')]/li")
 
