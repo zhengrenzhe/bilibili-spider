@@ -1,3 +1,4 @@
+PyChakra
 redis
 PyYAML
 appnope==0.1.0

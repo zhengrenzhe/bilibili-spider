@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List
 
+from infrastructure import postgres
+
 
 class Video:
     def __init__(
@@ -29,6 +31,9 @@ class Video:
         self.duration = duration
         self.cover_url = cover_url
 
+    def save(self):
+        postgres.video.create_videos_item(**self.__dict__)
+
 
 class VideoIncrement:
     def __init__(
@@ -51,6 +56,9 @@ class VideoIncrement:
         self.collect_count = collect_count
         self.share_count = share_count
 
+    def save(self):
+        postgres.video.create_videos_increment_item(**self.__dict__)
+
 
 class VideoRelated:
     def __init__(
@@ -60,3 +68,6 @@ class VideoRelated:
     ):
         self.vid = vid
         self.related_vid = related_vid
+
+    def save(self):
+        postgres.video.create_videos_related_item(**self.__dict__)

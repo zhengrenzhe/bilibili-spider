@@ -72,3 +72,4 @@ def get(url: str, timeout=0):
             print(err)
             log.error(log.TARGET_HTTP, "HTTP get request error", {"url": url, "error": err})
         i += 1
+    return None
