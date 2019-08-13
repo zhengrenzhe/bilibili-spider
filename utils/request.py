@@ -1,9 +1,11 @@
 import gzip
 import time
+from os import path
 from random import choice
 from urllib import request, parse, error
 
 from pycookiecheat import chrome_cookies
+from yaml import load, Loader
 
 from infrastructure import log
 
@@ -26,18 +28,18 @@ HEADERS = {
     "User-Agent": choice(UA)
 }
 
-# proxy_config = load(open(path.join(path.dirname(path.abspath(__file__)), "../proxy.yaml")), Loader=Loader)
-# proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
-#
-# log.info("Use proxy: %s" % proxy_url)
-#
-# proxy_handler = request.ProxyHandler({
-#     "http": proxy_url,
-#     "https": proxy_url,
-# })
-#
-# proxy_opener = request.build_opener(proxy_handler)
-# request.install_opener(proxy_opener)
+proxy_config = load(open(path.join(path.dirname(path.abspath(__file__)), "../proxy.yaml")), Loader=Loader)
+proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
+
+log.info(log.TARGET_HTTP, "Use proxy: %s" % proxy_url)
+
+proxy_handler = request.ProxyHandler({
+    "http": proxy_url,
+    "https": proxy_url,
+})
+
+proxy_opener = request.build_opener(proxy_handler)
+request.install_opener(proxy_opener)
 
 cookies = chrome_cookies("https://www.bilibili.com")
 HEADERS["Cookie"] = ";".join(["%s=%s" % (k, cookies[k]) for k in cookies])
