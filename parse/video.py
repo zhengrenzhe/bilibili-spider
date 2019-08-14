@@ -10,6 +10,9 @@ from utils.request import get
 
 
 def _extract(video_html: str):
+    if not video_html:
+        video_html = "<html></html>"
+
     video_dom = xpath(video_html)
     video_state = {}
     has_data = False

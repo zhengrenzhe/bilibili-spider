@@ -5,15 +5,16 @@ from parse import parse_video_page
 
 
 def do(url: str):
-    redis.Context.visit(url)
-
     log.info(log.TARGET_VIDEO_PAGE, "Start new video page url job", {"url": url})
 
     suc, video_base, video_increment, video_related = parse_video_page(url)
 
     if not suc:
-        log.error(log.TARGET_VIDEO_PAGE, "Failer to fetch video page data", {"url": url})
+        log.error(log.TARGET_VIDEO_PAGE, "Failer to fetch video page data, will re put in queue", {"url": url})
+        rabbitmq.send(json.dumps({"type": "video", "url": url}))
         return
+
+    redis.Context.visit(url)
 
     video_base.save()
     video_increment.save()
