@@ -23,7 +23,6 @@ def do():
         daily_html = request.get(make_daily_url(redis.Context.daily_pager_index))
 
         if not daily_html:
-            print(daily_html)
             continue
 
         daily_dom = lxml.html.etree.HTML(daily_html)
