@@ -17,7 +17,9 @@ def url_job(ch, method, properties, body):
             print(b["url"])
             video.do(b["url"])
 
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
 
 conn = rabbitmq.open_connection()
-conn.basic_consume(queue='video_urls', auto_ack=True, on_message_callback=url_job)
+conn.basic_consume(queue='video_urls', on_message_callback=url_job)
 conn.start_consuming()
