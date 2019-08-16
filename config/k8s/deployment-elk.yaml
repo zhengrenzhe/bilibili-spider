@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elk
+  template:
+    metadata:
+      labels:
+        app: elk
+    spec:
+      containers:
+        - name: slk
+          image: sebp/elk:720
+          ports:
+            - containerPort: 5601
+            - containerPort: 9200
+            - containerPort: 9300
+            - containerPort: 5044
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: elk-service
+spec:
+  selector:
+    app: elk
+  ports:
+    - port: 5601
+      name: kibana
+      targetPort: 5601
+    - port: 9200
+      name: elasticsearch-json-interface
+      targetPort: 9200
+    - port: 9300
+      name: elasticsearch-transport-interface
+      targetPort: 9300
+    - port: 5044
+      name: logstash-beats-interface
+      targetPort: 5044
+
+---
+
