@@ -1,6 +1,3 @@
-PyChakra
-redis
-PyYAML
 appnope==0.1.0
 APScheduler==3.6.1
 backcall==0.1.0
@@ -23,12 +20,14 @@ prompt-toolkit==2.0.9
 psycopg2-binary==2.8.2
 ptyprocess==0.6.0
 public==2019.4.13
-pycookiecheat==0.4.3
+PyChakra==2.2.0
 pycrypto==2.6.1
 Pygments==2.4.2
 python-logstash==0.4.6
 pytz==2019.1
+PyYAML==5.1.2
 query-string==2019.4.13
+redis==3.3.6
 request==2019.4.13
 requests==2.22.0
 six==1.12.0

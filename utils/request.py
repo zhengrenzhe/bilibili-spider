@@ -3,7 +3,6 @@ from random import choice
 from urllib import parse
 
 import requests
-from pycookiecheat import chrome_cookies
 from yaml import load, Loader
 
 from infrastructure import log
@@ -38,7 +37,8 @@ proxies = {
     "https": proxy_url,
 }
 
-cookies = chrome_cookies("https://www.bilibili.com")
+cookie_text = open("./cookie.txt").read()
+cookies = dict([x.strip().split('=') for x in cookie_text.split(";")])
 
 
 def get(url: str):
