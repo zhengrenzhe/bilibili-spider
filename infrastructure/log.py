@@ -4,7 +4,7 @@ from typing import Dict
 import logstash
 
 logger = logging.getLogger("bilibili")
-logger.addHandler(logstash.TCPLogstashHandler(host="localhost", port=5044))
+logger.addHandler(logstash.TCPLogstashHandler(host="elk-inside-service", port=5044))
 logger.setLevel(logging.DEBUG)
 
 TARGET_DATABASE = "Database"

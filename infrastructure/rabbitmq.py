@@ -4,7 +4,7 @@ from infrastructure import log
 
 
 def open_connection():
-    conn = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
+    conn = pika.BlockingConnection(pika.ConnectionParameters(host="rabbit-service"))
     chan = conn.channel()
 
     chan.queue_declare(queue='video_urls', durable=True)

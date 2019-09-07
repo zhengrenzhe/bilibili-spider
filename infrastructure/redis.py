@@ -2,8 +2,8 @@ import redis
 
 from infrastructure import log
 
-cfg_db = redis.Redis(db=0)
-daily_visited_db = redis.Redis(db=1)
+cfg_db = redis.Redis(host="redis-service", port=6379, db=0)
+daily_visited_db = redis.Redis(host="redis-service", port=6379, db=1)
 
 
 def update(name, value):
