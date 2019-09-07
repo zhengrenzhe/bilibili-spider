@@ -20,6 +20,8 @@ def url_job(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
+log.info(log.TARGET_VIDEO_PAGE, "start pages worker...")
+
 conn = rabbitmq.open_connection()
 conn.basic_consume(queue='video_urls', on_message_callback=url_job)
 conn.start_consuming()

@@ -23,20 +23,25 @@ def make_extra(log_target: str, extra: Dict = None):
 
 
 def debug(log_target: str, text: str, extra: Dict = None):
+    print(text)
     logger.debug(text, extra=make_extra(log_target, extra))
 
 
 def info(log_target: str, text: str, extra: Dict = None):
+    print(text)
     logger.info(text, extra=make_extra(log_target, extra))
 
 
 def warning(log_target: str, text: str, extra: Dict = None):
+    print(text)
     logger.warning(text, extra=make_extra(log_target, extra))
 
 
 def error(log_target: str, text: str, extra: Dict = None):
+    print(text)
     logger.error(text, extra=make_extra(log_target, extra))
 
 
 def critical(log_target: str, text: str, extra: Dict = None):
+    print(text)
     logger.critical(text, extra=make_extra(log_target, extra))
