@@ -23,7 +23,7 @@ spec:
           securityContext:
             privileged: true
       nodeSelector:
-        pool-name: elk
+        pool-name: env
       containers:
         - name: elk-container
           image: sebp/elk:720

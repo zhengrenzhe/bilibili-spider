@@ -14,7 +14,7 @@ spec:
         app: rabbit-instance
     spec:
       nodeSelector:
-        pool-name: rabbit
+        pool-name: env
       containers:
         - name: rabbit-container
           image: rabbitmq:3.7.17-management

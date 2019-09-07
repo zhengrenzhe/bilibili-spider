@@ -14,7 +14,7 @@ spec:
         app: postgres-instance
     spec:
       nodeSelector:
-        pool-name: postgres
+        pool-name: env
       containers:
         - name: postgres-container
           image: postgres:12
