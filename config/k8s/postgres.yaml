@@ -1,0 +1,63 @@
+# postgres deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-instance
+  template:
+    metadata:
+      labels:
+        app: postgres-instance
+    spec:
+      nodeSelector:
+        pool-name: postgres
+      containers:
+        - name: postgres-container
+          image: postgres:12
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "1234"
+          volumeMounts:
+            - name: postgres-persistent-vol
+              mountPath: /var/lib/postgresql/
+              subPath: data
+      volumes:
+        - name: postgres-persistent-vol
+          persistentVolumeClaim:
+            claimName: postgres-storage
+
+---
+
+# postgres service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres-instance
+  type: ClusterIP
+
+---
+
+# postgres persistent volume
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi

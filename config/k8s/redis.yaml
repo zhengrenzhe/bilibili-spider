@@ -1,0 +1,60 @@
+# redis deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-instance
+  template:
+    metadata:
+      labels:
+        app: redis-instance
+    spec:
+      nodeSelector:
+        pool-name: redis
+      containers:
+        - name: redis-container
+          image: redis:5.0.5
+          ports:
+            - containerPort: 6379
+          command: ["redis-server", "--appendonly yes"]
+          volumeMounts:
+            - name: redis-persistent-vol
+              mountPath: /data
+      volumes:
+        - name: redis-persistent-vol
+          persistentVolumeClaim:
+            claimName: redis-storage
+
+---
+
+# redis service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 6379
+      targetPort: 6379
+  selector:
+    app: redis-instance
+  type: ClusterIP
+
+---
+
+# redis persistent volume
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

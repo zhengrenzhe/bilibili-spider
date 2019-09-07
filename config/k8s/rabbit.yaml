@@ -1,0 +1,41 @@
+# rabbit deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit-instance
+  template:
+    metadata:
+      labels:
+        app: rabbit-instance
+    spec:
+      nodeSelector:
+        pool-name: rabbit
+      containers:
+        - name: rabbit-container
+          image: rabbitmq:3.7.17-management
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+
+---
+
+# rabbit service
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbit-service
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 5672
+      targetPort: 5672
+  selector:
+    app: rabbit-instance
+  type: ClusterIP
+
+---

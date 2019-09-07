@@ -1,0 +1,40 @@
+# py deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-app
+  labels:
+    app: py-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: py-app
+  template:
+    metadata:
+      labels:
+        app: py-app
+    spec:
+      containers:
+        - name: k8s-test-sha256
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/k8s-test:v12
+          ports:
+            - containerPort: 3000
+
+---
+
+# py service
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "py-app-service"
+  labels:
+    app: "py-app"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  selector:
+    app: "py-app"
+  type: "LoadBalancer"

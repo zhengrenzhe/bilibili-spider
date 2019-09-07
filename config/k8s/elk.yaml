@@ -1,0 +1,131 @@
+# elk deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elk-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elk-instance
+  template:
+    metadata:
+      labels:
+        app: elk-instance
+    spec:
+      initContainers:
+        - name: init-sysctl
+          image: busybox:1.27.2
+          command:
+            - sysctl
+            - -w
+            - vm.max_map_count=262144
+          securityContext:
+            privileged: true
+      nodeSelector:
+        pool-name: elk
+      containers:
+        - name: elk-container
+          image: sebp/elk:720
+          ports:
+            - containerPort: 5601
+            - containerPort: 9200
+            - containerPort: 9300
+            - containerPort: 5044
+          volumeMounts:
+            - mountPath: /etc/logstash/conf.d
+              name: elk-logstash-config
+      volumes:
+        - name: elk-logstash-config
+          configMap:
+            name: elk-logstash-config-content
+            items:
+              - key: 02-beats-input.conf
+                path: 02-beats-input.conf
+              - key: 10-syslog.conf
+                path: 10-syslog.conf
+              - key: 11-nginx.conf
+                path: 11-nginx.conf
+              - key: 30-output.conf
+                path: 30-output.conf
+
+---
+
+# elk inside service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elk-inside-service
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 5044
+      targetPort: 5044
+  selector:
+    app: elk-instance
+  type: ClusterIP
+
+---
+
+# elk outside service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elk-outside-service
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 5601
+      targetPort: 5601
+  selector:
+    app: elk-instance
+  type: LoadBalancer
+
+---
+
+#elk logstash config
+apiVersion: v1
+kind: ConfigMap
+data:
+  02-beats-input.conf: |
+    input {
+      tcp {
+        port => 5044
+        codec => json_lines
+      }
+    }
+  10-syslog.conf: |
+    filter {
+      if [type] == "syslog" {
+        grok {
+          match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+          add_field => [ "received_at", "%{@timestamp}" ]
+          add_field => [ "received_from", "%{host}" ]
+        }
+        syslog_pri { }
+        date {
+          match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+        }
+      }
+    }
+  11-nginx.conf: |
+    filter {
+      if [type] == "nginx-access" {
+        grok {
+          match => { "message" => "%{NGINXACCESS}" }
+        }
+      }
+    }
+  30-output.conf: |
+    output {
+      elasticsearch {
+        hosts => ["localhost"]
+        manage_template => false
+        index => "bilibili-log-%{+YYYY.MM.dd}"
+      }
+      stdout {
+        codec => rubydebug
+      }
+    }
+metadata:
+  name: elk-logstash-config-content
