@@ -19,9 +19,9 @@ spec:
         pool-name: code
       containers:
         - name: k8s-test-sha256
-          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v4
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v5
           volumeMounts:
-            - mountPath: /etc/bilibili/proxy.yaml
+            - mountPath: /etc/bilibili/etc
               name: proxy-data
               readOnly: true
       volumes:
