@@ -1,3 +1,4 @@
+from base64 import b64decode
 from random import choice
 from urllib import parse
 
@@ -29,7 +30,8 @@ def create_header(host: str):
     }
 
 
-proxy_config = load("/etc/bilibili/proxy.yaml", Loader=Loader)
+proxy_data = b64decode(open("/etc/bilibili/proxy.yaml").read()).decode('utf-8')
+proxy_config = load(proxy_data, Loader=Loader)
 proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
 proxies = {
     "http": proxy_url,
