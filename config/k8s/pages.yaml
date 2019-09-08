@@ -1,0 +1,22 @@
+# py deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pages-worker
+  labels:
+    app: pages-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pages-worker
+  template:
+    metadata:
+      labels:
+        app: pages-worker
+    spec:
+      nodeSelector:
+        pool-name: code
+      containers:
+        - name: k8s-test-sha256
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v2

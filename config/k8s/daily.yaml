@@ -1,0 +1,22 @@
+# py deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: daily-worker
+  labels:
+    app: daily-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: daily-worker
+  template:
+    metadata:
+      labels:
+        app: daily-worker
+    spec:
+      nodeSelector:
+        pool-name: code
+      containers:
+        - name: k8s-test-sha256
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-daily:v2
