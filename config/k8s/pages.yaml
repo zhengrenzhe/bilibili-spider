@@ -20,3 +20,11 @@ spec:
       containers:
         - name: k8s-test-sha256
           image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v2
+          volumeMounts:
+            - mountPath: /etc/bilibili/proxy.yaml
+              name: proxy-data
+              readOnly: true
+      volumes:
+        - name: proxy-data
+          secret:
+            secretName: proxy.yaml
