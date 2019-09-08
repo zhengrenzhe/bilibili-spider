@@ -1,4 +1,3 @@
-from os import path
 from random import choice
 from urllib import parse
 
@@ -30,7 +29,7 @@ def create_header(host: str):
     }
 
 
-proxy_config = load(open(path.join(path.dirname(path.abspath(__file__)), "../proxy.yaml")), Loader=Loader)
+proxy_config = load("/etc/bilibili/proxy.yaml", Loader=Loader)
 proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
 proxies = {
     "http": proxy_url,
