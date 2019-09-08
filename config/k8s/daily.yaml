@@ -19,4 +19,4 @@ spec:
         pool-name: code
       containers:
         - name: k8s-test-sha256
-          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-daily:v2
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-daily:v4

@@ -19,7 +19,7 @@ spec:
         pool-name: code
       containers:
         - name: k8s-test-sha256
-          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v2
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v4
           volumeMounts:
             - mountPath: /etc/bilibili/proxy.yaml
               name: proxy-data
