@@ -34,7 +34,7 @@ def _extract(video_html: str):
     duration = int(video_state.get("videoData", {}).get("duration", 0))
     cover_url = video_state.get("videoData", {}).get("pic", "")
 
-    related_videos = video_dom("//*[contains(@class,'video-page-card')]//div[@class='info']/a/@href")
+    related_videos = video_dom("//*[contains(@class,'video-page-card')]//div[@class='info']/a/@href", always_list=True)
 
     v = Video(vid=vid, title=title, ptype=ptype, ctype=ctype, describe=describe, upload_time=upload_time,
               author_name=author_name, author_id=author_id, tags=tags, duration=duration, cover_url=cover_url)

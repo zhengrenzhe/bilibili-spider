@@ -15,12 +15,15 @@ def get_first(target: List, default=""):
 def xpath(html: str):
     dom = etree.HTML(html)
 
-    def _extract(xpath_expr: str, default=""):
+    def _extract(xpath_expr: str, default="", always_list=False):
         result = dom.xpath(xpath_expr)
         if len(result) == 0:
             return []
         elif len(result) == 1:
-            return get_first(result, default)
+            if always_list:
+                return result
+            else:
+                return get_first(result, default)
         else:
             return result
 
