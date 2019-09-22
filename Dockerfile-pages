@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python", "pages_worker.py" ]
+CMD [ "python", "pages_worker.py", "--no-proxy" ]
