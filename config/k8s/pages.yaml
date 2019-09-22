@@ -18,8 +18,8 @@ spec:
       nodeSelector:
         pool-name: code
       containers:
-        - name: k8s-test-sha256
-          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v8
+        - name: pages-worker-container
+          image: gcr.io/bilibili-yes/github.com/zhengrenzhe/bilibili-spider-pages:v9
           volumeMounts:
             - mountPath: /etc/bilibili/etc
               name: proxy-data
