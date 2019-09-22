@@ -1,3 +1,4 @@
+import sys
 from base64 import b64decode
 from random import choice
 from urllib import parse
@@ -30,16 +31,19 @@ def create_header(host: str):
     }
 
 
-proxy_data = b64decode(open("/etc/bilibili/etc/proxy.yaml").read()).decode('utf-8')
-proxy_config = load(proxy_data, Loader=Loader)
-proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
-proxies = {
-    "http": proxy_url,
-    "https": proxy_url,
-}
+proxies = None
 
-cookie_text = open("./cookie.txt").read()
-cookies = dict([x.strip().split('=') for x in cookie_text.split(";")])
+if "--no-proxy" not in sys.argv:
+    proxy_data = b64decode(open("/etc/bilibili/proxy.yaml").read()).decode('utf-8')
+    proxy_config = load(proxy_data, Loader=Loader)
+    proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
+    proxies = {
+        "http": proxy_url,
+        "https": proxy_url,
+    }
+
+cookie_text = open("./cookies").read()
+cookies = dict(map(lambda x: x.strip().split('='), cookie_text.split(";")))
 
 
 def get(url: str):
