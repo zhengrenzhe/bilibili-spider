@@ -11,7 +11,7 @@ def do(url: str):
 
     if not suc:
         log.error(log.TARGET_VIDEO_PAGE, "Failer to fetch video page data, will re put in queue", {"url": url})
-        rabbitmq.send(json.dumps({"type": "video", "url": url}))
+        rabbitmq.send(json.dumps({"type": "video", "url": url}), rabbitmq.PRIORITY_VIDEO_FROM_RELATIVE)
         return
 
     redis.Context.visit(url)
@@ -23,7 +23,7 @@ def do(url: str):
     for r_vid in video_related.related_vid:
         r_url = "https://www.bilibili.com/video/av%s" % r_vid
         if not redis.Context.is_visited_today(r_url):
-            rabbitmq.send(json.dumps({"type": "video", "url": r_url}))
+            rabbitmq.send(json.dumps({"type": "video", "url": r_url}), rabbitmq.PRIORITY_VIDEO_FROM_RELATIVE)
             log.info(log.TARGET_VIDEO_PAGE, "Add related video to queue", {"url": r_url})
 
     log.info(log.TARGET_VIDEO_PAGE, "Finished new video page url job", {"url": url})

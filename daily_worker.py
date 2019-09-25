@@ -44,7 +44,7 @@ def do():
             date_pub = datetime.datetime(now.year, int(date_pub_str[0]), int(date_pub_str[1]))
 
             video_url = "https://www.bilibili.com%s" % vi.xpath("a[@class='title']/@href")[0]
-            rabbitmq.send(json.dumps({"type": "video", "url": video_url}))
+            rabbitmq.send(json.dumps({"type": "video", "url": video_url}), rabbitmq.PRIORITY_VIDEO_FROM_DAILY)
 
             log.info(log.TARGET_DAILY_PAGER, "New video will in queue", {"url": video_url, "date": date_pub,
                                                                          "title": (vi.xpath(
