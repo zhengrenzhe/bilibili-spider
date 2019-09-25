@@ -27,7 +27,7 @@ class _Context:
         update("daily_pager_index", new_index)
 
     @staticmethod
-    def is_visited(url=""):
+    def is_visited_today(url=""):
         return daily_visited_db.get(url) == b'1'
 
     @staticmethod

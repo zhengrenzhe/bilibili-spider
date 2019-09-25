@@ -11,7 +11,7 @@ def url_job(ch, method, _, body):
 
     if b["type"] == "video":
         url = b["url"]
-        if redis.Context.is_visited(url):
+        if redis.Context.is_visited_today(url):
             log.info(log.TARGET_REDIS, "Video page is visited, ignored", {"url": url})
         else:
             print(b["url"])

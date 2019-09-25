@@ -22,7 +22,7 @@ def do(url: str):
 
     for r_vid in video_related.related_vid:
         r_url = "https://www.bilibili.com/video/av%s" % r_vid
-        if not redis.Context.is_visited(r_url):
+        if not redis.Context.is_visited_today(r_url):
             rabbitmq.send(json.dumps({"type": "video", "url": r_url}))
             log.info(log.TARGET_VIDEO_PAGE, "Add related video to queue", {"url": r_url})
 
