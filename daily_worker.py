@@ -16,6 +16,7 @@ def make_daily_url(pager):
 def do():
     log.info(log.TARGET_DAILY_PAGER, "Start fetch last day uploaded videos")
 
+    # 小于一个固定的翻页页数
     while redis.Context.daily_pager_index < MAX_DAILY_PAGER:
 
         log.info(log.TARGET_DAILY_PAGER, "Fetching new list", {"url": make_daily_url(redis.Context.daily_pager_index)})
@@ -23,6 +24,8 @@ def do():
         daily_html = request.get(make_daily_url(redis.Context.daily_pager_index))
 
         if not daily_html:
+            log.warning(log.TARGET_DAILY_PAGER, "daily page has no html response",
+                        {"url": make_daily_url(redis.Context.daily_pager_index)})
             continue
 
         daily_dom = lxml.html.etree.HTML(daily_html)
