@@ -4,7 +4,7 @@ from infrastructure import log, rabbitmq, redis
 from jobs import video
 
 
-def url_job(ch, method, properties, body):
+def url_job(ch, method, _, body):
     b = json.loads(body)
 
     log.info(log.TARGET_RABBITMQ, "Get message from rabbitbq", {"content": b})
