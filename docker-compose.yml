@@ -37,8 +37,7 @@ services:
       - "5044:5044"
     volumes:
       - "$PWD/config/logstash:/etc/logstash"
-    ulimits:
-      nproc: 300000
-      nofile:
-        soft: 20000
-        hard: 100000
+    command:
+      - sysctl
+      - -w
+      - vm.max_map_count=262144
