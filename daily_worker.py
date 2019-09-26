@@ -13,7 +13,7 @@ def make_daily_url(pager):
     return "https://www.bilibili.com/newlist.html?page=%s" % pager
 
 
-def do():
+def daily_job():
     log.info(log.TARGET_DAILY_PAGER, "Start fetch last day uploaded videos")
 
     # 小于一个固定的翻页页数
@@ -50,8 +50,8 @@ def do():
                                                                          "title": (vi.xpath(
                                                                              "a[@class='title']/text()") or [""])[0]})
 
-    log.info(log.TARGET_DAILY_PAGER, "Fetching new list stopped")
+    log.info(log.TARGET_DAILY_PAGER, "Fetching new list finished")
 
 
 if __name__ == "__main__":
-    do()
+    daily_job()

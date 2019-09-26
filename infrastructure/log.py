@@ -13,6 +13,7 @@ TARGET_HTTP = "HTTP"
 TARGET_RABBITMQ = "RabbitMQ"
 TARGET_VIDEO_PAGE = "VideoPage"
 TARGET_REDIS = "Redis"
+TARGET_CRON = "Cron"
 
 
 def make_extra(log_target: str, extra: Dict = None):
