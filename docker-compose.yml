@@ -37,3 +37,8 @@ services:
       - "5044:5044"
     volumes:
       - "$PWD/config/logstash:/etc/logstash"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
