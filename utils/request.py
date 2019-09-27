@@ -29,7 +29,7 @@ def create_header(host: str):
         "Upgrade-Insecure-Requests": "1",
         "Host": host,
         "User-Agent": choice(ua),
-        "Proxy-Tunnel": str(math.floor(random.random() * 10000))
+        "Proxy-Tunnel": str(math.floor(random() * 10000))
     }
 
 
