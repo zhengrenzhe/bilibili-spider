@@ -21,8 +21,8 @@ def daily_fetch_pagers():
     daily_job()
 
 
-schedule.every().days.at("01:00").do(fetch_last_7_days_videos)
-schedule.every().days.at("03:00").do(daily_fetch_pagers)
+schedule.every().days.at("03:00").do(fetch_last_7_days_videos)
+schedule.every().days.at("00:01").do(daily_fetch_pagers)
 
 while True:
     schedule.run_pending()
