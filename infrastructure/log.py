@@ -2,6 +2,7 @@ import logging
 from typing import Dict
 
 import logstash
+from termcolor import colored
 
 logger = logging.getLogger("bilibili")
 logger.addHandler(logstash.TCPLogstashHandler(host="elk-inside-service", port=5044))
@@ -24,15 +25,15 @@ def make_extra(log_target: str, extra: Dict = None):
 
 
 def info(log_target: str, text: str, extra: Dict = None):
-    print(text)
+    print(colored(text, 'green'))
     logger.info(text, extra=make_extra(log_target, extra))
 
 
 def warning(log_target: str, text: str, extra: Dict = None):
-    print(text)
+    print(colored(text, 'yellow'))
     logger.warning(text, extra=make_extra(log_target, extra))
 
 
 def error(log_target: str, text: str, extra: Dict = None):
-    print(text)
+    print(colored(text, 'red'))
     logger.error(text, extra=make_extra(log_target, extra))

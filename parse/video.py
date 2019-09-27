@@ -80,11 +80,9 @@ def parse_video_page(url: str) -> Tuple[bool, Video, VideoIncrement, VideoRelate
     suc2, video_increment_data = _extract_increment_info(vid, video_quota)
 
     if not suc1:
-        print("not html res data")
         log.error(log.TARGET_VIDEO_PAGE, "Video page html request has None response", {"url": url})
 
     if not suc2:
-        print("not api res data")
         log.error(log.TARGET_VIDEO_PAGE, "Video page api request has None response", {"url": url})
 
     log.info(log.TARGET_VIDEO_PAGE, "Finished parse video page data", {"url": url})
