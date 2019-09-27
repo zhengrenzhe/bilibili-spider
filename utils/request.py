@@ -1,7 +1,7 @@
 import sys
-from base64 import b64decode
 from random import choice
 from urllib import parse
+from os import path
 
 import requests
 from yaml import load, Loader
@@ -34,7 +34,8 @@ def create_header(host: str):
 proxies = None
 
 if "--no-proxy" not in sys.argv:
-    proxy_data = b64decode(open("/etc/bilibili/proxy.yaml").read()).decode('utf-8')
+    proxy_config_path = path.normpath(path.join(path.dirname(__file__), '../proxy.yaml'))
+    proxy_data = open(proxy_config_path).read()
     proxy_config = load(proxy_data, Loader=Loader)
     proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
     proxies = {
