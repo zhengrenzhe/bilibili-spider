@@ -1,7 +1,8 @@
+import math
 import sys
-from random import choice
-from urllib import parse
 from os import path
+from random import choice, random
+from urllib import parse
 
 import requests
 from yaml import load, Loader
@@ -27,7 +28,8 @@ def create_header(host: str):
         "DNT": "1",
         "Upgrade-Insecure-Requests": "1",
         "Host": host,
-        "User-Agent": choice(ua)
+        "User-Agent": choice(ua),
+        "Proxy-Tunnel": str(math.floor(random.random() * 10000))
     }
 
 
