@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from PyChakra import Runtime
@@ -49,3 +50,15 @@ def get_object(js_string: str, js_name: str):
         return result[1]
     else:
         return None
+
+
+def get_vid_from_url(url: str):
+    s = re.search(r"bilibili.com/video/av(\d+)", url)
+    if not s:
+        return ""
+
+    g = s.groups()
+    if len(g) != 1:
+        return ""
+
+    return g[0]

@@ -1,3 +1,4 @@
+import json
 import math
 import sys
 from os import path
@@ -5,9 +6,9 @@ from random import choice, random
 from urllib import parse
 
 import requests
-from yaml import load, Loader
 
 from infrastructure import log
+from utils.yaml import read_yaml
 
 
 def create_header(host: str):
@@ -37,15 +38,14 @@ proxies = None
 
 if "--no-proxy" not in sys.argv:
     proxy_config_path = path.normpath(path.join(path.dirname(__file__), '../proxy.yaml'))
-    proxy_data = open(proxy_config_path).read()
-    proxy_config = load(proxy_data, Loader=Loader)
+    proxy_config = read_yaml(proxy_config_path)
     proxy_url = "http://%(username)s:%(password)s@%(host)s:%(port)s" % proxy_config
     proxies = {
         "http": proxy_url,
         "https": proxy_url,
     }
 
-cookie_text = open("./cookies").read()
+cookie_text = open(path.normpath(path.join(path.dirname(__file__), '../cookies'))).read()
 cookies = dict(map(lambda x: x.strip().split('='), cookie_text.split(";")))
 
 
@@ -62,3 +62,24 @@ def get(url: str):
         return r.text
     except requests.exceptions.RequestException as err:
         log.error(log.TARGET_HTTP, "HTTP get request error", {"url": url, "error": str(err)})
+
+
+def api_get(url: str):
+    try:
+        r = requests.get(url, proxies=proxies, timeout=2)
+        r.encoding = "utf-8"
+
+        res = json.loads(r.text)
+
+        if res.get("code") == 0:
+            log.info(log.TARGET_HTTP, "API get success", {"url": url})
+            return True, res.get("data")
+        else:
+            log.error(log.TARGET_HTTP, "API get error",
+                      {"url": url, "error_msg": res.get("message"), "error_code": res.get("code")})
+            return False, res.get("message")
+
+    except requests.exceptions.RequestException as err:
+
+        log.error(log.TARGET_HTTP, "API network error", {"url": url, "error": str(err)})
+        return False, "Proxy Error"
