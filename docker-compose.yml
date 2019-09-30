@@ -36,4 +36,4 @@ services:
       - "9300:9300"
       - "5044:5044"
     volumes:
-      - "$PWD/config/logstash:/etc/logstash"
+      - "./config/logstash:/etc/logstash"
