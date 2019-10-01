@@ -5,7 +5,7 @@ from utils.extract import get_vid_from_url
 def spider_job(url: str):
     vid = get_vid_from_url(url)
     print(vid)
-    ok, data = get_video_data("69132113")
+    ok, data = get_video_data(vid)
     print(ok)
 
 
