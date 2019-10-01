@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from infrastructure import log, postgres
@@ -7,9 +8,8 @@ cur = postgres.CUR
 
 
 def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: str,
-                       upload_time: str, author_name: str, author_id: int, tags: List[str],
+                       upload_time: datetime, author_name: str, author_id: int, tags: List[str],
                        duration: int, cover_url: str):
-    log.info(log.TARGET_DATABASE, "Start write db:videos_item", {"vid": vid})
     try:
         cur.execute(
             """
@@ -23,12 +23,12 @@ def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: s
         log.error(log.TARGET_DATABASE, str(e), {"vid": vid})
         conn.rollback()
     else:
+        log.info(log.TARGET_DATABASE, "Write db:videos_item success", {"vid": vid})
         conn.commit()
 
 
 def create_videos_increment_item(vid: int, danmu_count: int, play_count: int, reply_count: int,
                                  like_count: int, coin_count: int, collect_count: int, share_count: int):
-    log.info(log.TARGET_DATABASE, "Start write db:videos_increment_item", {"vid": vid})
     try:
         cur.execute(
             """
@@ -42,11 +42,11 @@ def create_videos_increment_item(vid: int, danmu_count: int, play_count: int, re
         log.error(log.TARGET_DATABASE, str(e), {"vid": vid})
         conn.rollback()
     else:
+        log.info(log.TARGET_DATABASE, "Write db:videos_increment_item success", {"vid": vid})
         conn.commit()
 
 
-def create_videos_related_item(vid: int, related_vid: int):
-    log.info(log.TARGET_DATABASE, "Start write db:videos_related_item", {"vid": vid})
+def create_videos_related_item(vid: int, related_vid: List[int]):
     try:
         cur.execute(
             """
@@ -60,4 +60,5 @@ def create_videos_related_item(vid: int, related_vid: int):
         log.error(log.TARGET_DATABASE, str(e), {"vid": vid})
         conn.rollback()
     else:
+        log.info(log.TARGET_DATABASE, "Write db:videos_related_item success", {"vid": vid})
         conn.commit()

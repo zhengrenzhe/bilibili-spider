@@ -3,7 +3,7 @@ import redis
 from infrastructure import log
 
 cfg_db = redis.Redis(host="redis-service", port=6379, db=0)
-daily_visited_db = redis.Redis(host="redis-service", port=6379, db=1)
+visited_db = redis.Redis(host="redis-service", port=6379, db=1)
 
 
 def update(name, value):
@@ -27,17 +27,12 @@ class _Context:
         update("daily_pager_index", new_index)
 
     @staticmethod
-    def is_visited_today(url=""):
-        return daily_visited_db.get(url) == b'1'
+    def is_visited(key=""):
+        return visited_db.get(key) == b'1'
 
     @staticmethod
-    def visit(url=""):
-        daily_visited_db.set(url, 1)
-
-    @staticmethod
-    def clear_all_visited():
-        daily_visited_db.flushdb()
-        log.info(log.TARGET_REDIS, "Redis clear all visited urls")
+    def visit(key=""):
+        visited_db.set(key, 1)
 
 
 Context = _Context()

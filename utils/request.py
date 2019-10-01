@@ -64,9 +64,22 @@ def get(url: str):
         log.error(log.TARGET_HTTP, "HTTP get request error", {"url": url, "error": str(err)})
 
 
+wechat_headers = {
+    "Host": "api.bilibili.com",
+    "Content-Type": "application/json",
+    "Connection": "keep-alive",
+    "Accept": "*/*",
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                  "Mobile/15E148 MicroMessenger/7.0.7(0x17000721) NetType/WIFI Language/zh_CN",
+    "Referer": "https://servicewechat.com/wx7564fd5313d24844/90/page-frame.html",
+    "Accept-Language": "zh-cn",
+    "Accept-Encoding": "gzip, deflate, br"
+}
+
+
 def api_get(url: str):
     try:
-        r = requests.get(url, proxies=proxies, timeout=2)
+        r = requests.get(url, proxies=proxies, timeout=2, headers=wechat_headers)
         r.encoding = "utf-8"
 
         res = json.loads(r.text)
@@ -80,6 +93,5 @@ def api_get(url: str):
             return False, res.get("message")
 
     except requests.exceptions.RequestException as err:
-
         log.error(log.TARGET_HTTP, "API network error", {"url": url, "error": str(err)})
         return False, "Proxy Error"

@@ -52,7 +52,7 @@ def get_object(js_string: str, js_name: str):
         return None
 
 
-def get_vid_from_url(url: str):
+def get_vid_from_url(url: str) -> str:
     s = re.search(r"bilibili.com/video/av(\d+)", url)
     if not s:
         return ""
