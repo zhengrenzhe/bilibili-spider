@@ -62,3 +62,13 @@ def create_videos_related_item(vid: int, related_vid: List[int]):
     else:
         log.info(log.TARGET_DATABASE, "Write db:videos_related_item success", {"vid": vid})
         conn.commit()
+
+
+def get_all_vids():
+    cur.execute(
+        """
+        SELECT vid from videos;
+        """
+    )
+    results = cur.fetchall()
+    return results
