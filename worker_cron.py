@@ -6,8 +6,8 @@ import time
 
 import schedule
 
-from daily_worker import daily_job
 from infrastructure import redis, log
+from worker_daily import daily_job
 
 
 def fetch_last_7_days_videos():
