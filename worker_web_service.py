@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 from reports import system, spider
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/stat_info")
