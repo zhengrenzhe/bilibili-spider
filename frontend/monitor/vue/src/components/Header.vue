@@ -12,15 +12,16 @@
 
 <style scoped lang="scss">
     .header {
-        padding: 10px 14px;
-        background-color: indianred;
-        font-size: 16px;
+        padding: 14px;
         user-select: none;
         box-shadow: 1px 1px 4px 0 rgb(195, 195, 195);
+        background-color: #FCFCFD;
 
         a {
-            color: #fff;
+            color: #33373B;
             text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
         }
     }
 </style>

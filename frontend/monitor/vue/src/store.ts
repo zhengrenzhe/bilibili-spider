@@ -12,17 +12,17 @@ const Store = new Vuex.Store({
         stats: [],
     },
     mutations: {
-        update_stat(state, new_stat) {
+        update_stat(state, newStat) {
             // @ts-ignore
             state.stats.push(JSON.parse(JSON.stringify(state.stat)));
-            state.stat = { ...new_stat };
+            state.stat = { ...newStat };
         },
     },
 });
 
 setInterval(() => {
-    axios.get(`${ API_BASE }/stat_info`).then(res => {
-        Store.commit("update_stat", res);
+    axios.get(`${ API_BASE }/stat_info`).then((res) => {
+        Store.commit("update_stat", res.data);
     });
 }, 1000);
 
