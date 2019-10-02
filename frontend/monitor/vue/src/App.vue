@@ -27,5 +27,6 @@
 
     body {
         margin: 0;
+        background-color: rgb(252, 251, 254);
     }
 </style>
