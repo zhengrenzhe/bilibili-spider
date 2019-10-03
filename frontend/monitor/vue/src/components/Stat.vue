@@ -20,10 +20,30 @@
             <div class="block-title">
                 Memory
             </div>
-            <canvas id="memory" width="240px" height="180px">
-            </canvas>
+            <div class="memory-info">
+                <template v-if="system">
+                    <div class="label-phy">Physical ({{system["memory"].total / Math.pow(1024, 3)}}GB)
+                    </div>
+                    <div class="percent-bar">
+                        <div class="percent-body phy"
+                             :style="{width: `${system['memory']['used'] / system['memory']['total'] * 100}%`}"
+                        >
+                        </div>
+                    </div>
+                    <div class="label-swap">Swap ({{system["swap"].total / Math.pow(1024, 3)}}GB)</div>
+                    <div class="percent-bar">
+                        <div class="percent-body swap"
+                             :style="{width: `${system['swap']['used'] / system['swap']['total'] * 100}%`}"
+                        >
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
         <div class="block disk">
+            <div class="block-title">
+                Disk
+            </div>
             <canvas id="disk" width="240px" height="240px"></canvas>
         </div>
     </div>
@@ -164,57 +184,6 @@
                     },
                 },
             });
-
-            this.memoryChart = new Chart(document.getElementById("memory").getContext("2d"), {
-                type: "horizontalBar",
-                data: {
-                    labels: ["phy", "swap"],
-                    datasets: [
-                        {
-                            label: "used",
-                            data: [0, 0],
-                            backgroundColor: "#3498db",
-                        },
-                        {
-                            label: "total",
-                            data: [0, 0],
-                            backgroundColor: "#e2e2e2",
-                        },
-                    ],
-                },
-
-                options: {
-                    legend: {
-                        display: false,
-                    },
-                    title: {
-                        display: false,
-                    },
-                    tooltips: {
-                        enabled: false,
-                    },
-                    layout: {
-                        padding: {
-                            left: 10,
-                        },
-                    },
-                    animation: {
-                        duration: 0,
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                            display: false,
-                        }],
-                        yAxes: [{
-                            stacked: true,
-                            // display: false,
-                            barPercentage: 0.4,
-                            categoryPercentage: 1,
-                        }],
-                    },
-                },
-            });
         },
         created() {
             this.$store.subscribe((_, state) => {
@@ -227,21 +196,9 @@
                     y: state.stat.system["network"]["download"],
                     t: new Date(),
                 });
-                const phyTotal = state.stat.system["memory"]["total"] / Math.pow(1024, 3);
-                const swapTotal = state.stat.system["swap"]["total"] / Math.pow(1024, 3);
-                this.memoryChart.data.labels = [`Phy(${phyTotal}GB)`, `Swap(${swapTotal}GB)`];
-                this.memoryChart.data.datasets[0].data = [
-                    state.stat.system["memory"]["used"] / Math.pow(1024, 3),
-                    state.stat.system["swap"]["used"] / Math.pow(1024, 3),
-                ];
-                this.memoryChart.data.datasets[1].data = [
-                    phyTotal,
-                    swapTotal,
-                ];
 
                 this.cpuChart.update();
                 this.networkChart.update();
-                this.memoryChart.update();
             });
         },
     }
@@ -309,6 +266,46 @@
 
             .down, .swap {
                 color: #3498db;
+            }
+        }
+
+        .memory-info {
+            height: 180px;
+            padding: 14px 20px;
+            box-sizing: border-box;
+
+            .label-phy, .label-swap {
+                color: rgba(255, 99, 132, 1);
+                font-size: 15px;
+                font-weight: 500;
+            }
+
+            .label-swap {
+                color: rgba(54, 162, 235, 1);
+            }
+
+            .percent-bar {
+                margin: 8px 0 16px;
+                width: 100%;
+                height: 40px;
+                border-radius: 4px;
+                background-color: #e4e4e4;
+
+                .percent-body {
+                    height: 100%;
+                    background-color: red;
+                    border-radius: 4px;
+                    width: 0;
+                    transition: width 0.2s ease-in-out;
+
+                    &.phy {
+                        background-color: rgba(255, 99, 132, 1);
+                    }
+
+                    &.swap {
+                        background-color: rgba(54, 162, 235, 1);
+                    }
+                }
             }
         }
     }
