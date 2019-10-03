@@ -1,6 +1,7 @@
 <template>
     <div>
         <Header/>
+        <Count/>
         <Stat/>
         <Ctrl/>
     </div>
@@ -11,12 +12,14 @@
     import Header from "./components/Header.vue";
     import Stat from "./components/Stat.vue";
     import Ctrl from "./components/Ctrl.vue";
+    import Count from "./components/Count.vue";
 
     @Component({
         components: {
             Header,
             Stat,
             Ctrl,
+            Count,
         },
     })
     export default class App extends Vue {
