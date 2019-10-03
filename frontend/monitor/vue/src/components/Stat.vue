@@ -17,6 +17,9 @@
             <canvas id="network" width="240px" height="180px"></canvas>
         </div>
         <div class="block memory">
+            <div class="block-title">
+                Memory
+            </div>
             <canvas id="memory" width="240px" height="180px">
             </canvas>
         </div>
@@ -62,6 +65,7 @@
         data() {
             return {
                 cpuChart: {},
+                networkChart: {},
                 memoryChart: {},
             };
         },
@@ -103,7 +107,7 @@
                 },
             });
 
-            this.memoryChart = new Chart(document.getElementById("network").getContext("2d"), {
+            this.networkChart = new Chart(document.getElementById("network").getContext("2d"), {
                 type: "bar",
                 data: {
                     datasets: [
@@ -158,24 +162,85 @@
                             display: false,
                         }],
                     },
-                }
-                ,
-            })
-            ;
+                },
+            });
+
+            this.memoryChart = new Chart(document.getElementById("memory").getContext("2d"), {
+                type: "horizontalBar",
+                data: {
+                    labels: ["phy", "swap"],
+                    datasets: [
+                        {
+                            label: "used",
+                            data: [0, 0],
+                            backgroundColor: "#3498db",
+                        },
+                        {
+                            label: "total",
+                            data: [0, 0],
+                            backgroundColor: "#e2e2e2",
+                        },
+                    ],
+                },
+
+                options: {
+                    legend: {
+                        display: false,
+                    },
+                    title: {
+                        display: false,
+                    },
+                    tooltips: {
+                        enabled: false,
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                        },
+                    },
+                    animation: {
+                        duration: 0,
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            display: false,
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            // display: false,
+                            barPercentage: 0.4,
+                            categoryPercentage: 1,
+                        }],
+                    },
+                },
+            });
         },
         created() {
             this.$store.subscribe((_, state) => {
                 this.cpuChart.data.datasets[0].data = state.stat.system["cpu"]["percent"];
-                this.memoryChart.data.datasets[0].data = appendTimeSeries(this.memoryChart.data.datasets[0].data, {
+                this.networkChart.data.datasets[0].data = appendTimeSeries(this.networkChart.data.datasets[0].data, {
                     y: state.stat.system["network"]["upload"],
                     t: new Date(),
                 });
-                this.memoryChart.data.datasets[1].data = appendTimeSeries(this.memoryChart.data.datasets[1].data, {
+                this.networkChart.data.datasets[1].data = appendTimeSeries(this.networkChart.data.datasets[1].data, {
                     y: state.stat.system["network"]["download"],
                     t: new Date(),
                 });
+                const phyTotal = state.stat.system["memory"]["total"] / Math.pow(1024, 3);
+                const swapTotal = state.stat.system["swap"]["total"] / Math.pow(1024, 3);
+                this.memoryChart.data.labels = [`Phy(${phyTotal}GB)`, `Swap(${swapTotal}GB)`];
+                this.memoryChart.data.datasets[0].data = [
+                    state.stat.system["memory"]["used"] / Math.pow(1024, 3),
+                    state.stat.system["swap"]["used"] / Math.pow(1024, 3),
+                ];
+                this.memoryChart.data.datasets[1].data = [
+                    phyTotal,
+                    swapTotal,
+                ];
 
                 this.cpuChart.update();
+                this.networkChart.update();
                 this.memoryChart.update();
             });
         },
@@ -232,17 +297,17 @@
             border-radius: 4px;
         }
 
-        .network-speed {
+        .network-speed, .memory-usage {
             font-size: 14px;
             width: 100px;
             margin-left: 10px;
             flex: 1;
 
-            .up {
+            .up, .phy {
                 color: #e74c3c;
             }
 
-            .down {
+            .down, .swap {
                 color: #3498db;
             }
         }

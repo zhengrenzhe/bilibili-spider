@@ -65,17 +65,16 @@ def get_cpu_info():
 def get_memory_info():
     m = psutil.virtual_memory()
     return {
-        "total": m.total,
-        "available": m.available,
+        "used": m.used,
+        "total": m.total
     }
 
 
 def get_swap_info():
     m = psutil.swap_memory()
     return {
-        "total": m.total,
         "used": m.used,
-        "free": m.free,
+        "total": m.total,
     }
 
 
