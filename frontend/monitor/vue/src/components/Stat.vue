@@ -73,10 +73,6 @@
     export default {
         name: "Stat",
         computed: {
-            processes() {
-                const d = this.$store.state.stat;
-                return d ? d.processes : null;
-            },
             system() {
                 const d = this.$store.state.stat;
                 return d ? d.system : null;
@@ -86,16 +82,15 @@
             return {
                 cpuChart: {},
                 networkChart: {},
-                memoryChart: {},
             };
         },
         mounted() {
             this.cpuChart = new Chart(document.getElementById("cpu").getContext("2d"), {
                 type: "bar",
                 data: {
-                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                    labels: [],
                     datasets: [{
-                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        data: [],
                         backgroundColor: "rgba(255, 99, 132, 0.2)",
                         borderColor: "rgba(255, 99, 132, 1)",
                         borderWidth: 0.5,
@@ -187,7 +182,9 @@
         },
         created() {
             this.$store.subscribe((_, state) => {
+                this.cpuChart.data.labels = Array(state.stat.system["cpu"]["percent"].length).fill(1);
                 this.cpuChart.data.datasets[0].data = state.stat.system["cpu"]["percent"];
+
                 this.networkChart.data.datasets[0].data = appendTimeSeries(this.networkChart.data.datasets[0].data, {
                     y: state.stat.system["network"]["upload"],
                     t: new Date(),
