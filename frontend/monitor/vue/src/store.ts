@@ -28,3 +28,4 @@ setInterval(() => {
 
 
 export default Store;
+export { API_BASE };

@@ -5,7 +5,6 @@ server = ServerProxy("http://localhost:9001/RPC2")
 
 def get_supervisor_info():
     return {
-        "api_version": server.supervisor.getAPIVersion(),
         "supervisor_state": server.supervisor.getState(),
         "supervisor_pid": server.supervisor.getPID(),
     }

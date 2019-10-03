@@ -2,6 +2,7 @@
     <div>
         <Header/>
         <Stat/>
+        <Ctrl/>
     </div>
 </template>
 
@@ -9,11 +10,13 @@
     import { Component, Vue } from "vue-property-decorator";
     import Header from "./components/Header.vue";
     import Stat from "./components/Stat.vue";
+    import Ctrl from "./components/Ctrl.vue";
 
     @Component({
         components: {
             Header,
             Stat,
+            Ctrl,
         },
     })
     export default class App extends Vue {
