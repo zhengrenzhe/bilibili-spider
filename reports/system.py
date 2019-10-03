@@ -1,6 +1,36 @@
+import threading
+import time
 from datetime import datetime
 
 import psutil
+
+network_speed = [0, 0]
+last_bytes = [0, 0]
+last_time = time.time()
+
+
+def calc_network_speed(_speed, _last_bytes, _last_time):
+    while True:
+        total = psutil.net_io_counters(pernic=False)
+
+        # kbps
+        cur_time = time.time()
+        speed_upload = round((total.bytes_sent - _last_bytes[0]) / 1024, 2)
+        speed_download = round((total.bytes_recv - _last_bytes[1]) / 1024, 2)
+
+        _last_bytes.clear()
+        _last_bytes.append(total.bytes_sent)
+        _last_bytes.append(total.bytes_recv)
+        _speed.clear()
+        _speed.append(speed_upload)
+        _speed.append(speed_download)
+        _last_time = cur_time
+        time.sleep(1)
+
+
+t = threading.Thread(target=calc_network_speed, args=(network_speed, last_bytes, last_time,))
+t.daemon = True
+t.start()
 
 
 def get_disk_info():
@@ -27,6 +57,7 @@ def get_disk_usage_info():
 def get_cpu_info():
     return {
         "core_count": psutil.cpu_count(logical=False),
+        "total_percent": psutil.cpu_percent(),
         "percent": psutil.cpu_percent(percpu=True),
     }
 
@@ -49,12 +80,9 @@ def get_swap_info():
 
 
 def get_network_info():
-    n = psutil.net_io_counters(pernic=False)
     return {
-        "bytes_sent": n.bytes_sent,
-        "bytes_recv": n.bytes_recv,
-        "packets_sent": n.packets_sent,
-        "packets_recv": n.packets_recv,
+        "upload": network_speed[0],
+        "download": network_speed[1],
     }
 
 

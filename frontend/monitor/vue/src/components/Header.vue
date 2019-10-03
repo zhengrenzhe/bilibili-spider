@@ -14,7 +14,7 @@
     .header {
         padding: 14px;
         user-select: none;
-        box-shadow: 1px 1px 4px 0 rgb(195, 195, 195);
+        box-shadow: 0 0 2px 0 rgb(195, 195, 195);
         background-color: #FCFCFD;
 
         a {
