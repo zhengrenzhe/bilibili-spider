@@ -22,7 +22,8 @@
             </div>
             <div class="memory-info">
                 <template v-if="system">
-                    <div class="label-phy">Physical ({{system["memory"].total / Math.pow(1024, 3)}}GB)
+                    <div class="label-phy">
+                        Physical ({{system["memory"].total / Math.pow(1024, 3)}}GB)
                     </div>
                     <div class="percent-bar">
                         <div class="percent-body phy"
@@ -44,7 +45,23 @@
             <div class="block-title">
                 Disk
             </div>
-            <canvas id="disk" width="240px" height="240px"></canvas>
+            <div class="disk-info">
+                <template v-if="system">
+                    <div class="disk-item" v-for="disk in system['disk']">
+                        <div class="disk-label">
+                            <span>{{disk["device"]}}</span>
+                            <span>{{disk["mount_point"]}}</span>
+                        </div>
+                        <div class="disk-bar">
+                            <div class="disk-bar-body"
+                                 :style="{width: `${disk['used'] / disk['total'] * 100}%`}"
+                            >
+                            </div>
+                            <span class="disk-usage total">{{Math.floor(disk["total"] / Math.pow(1024,3))}} GB</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </div>
 </template>
@@ -290,7 +307,6 @@
 
                 .percent-body {
                     height: 100%;
-                    background-color: red;
                     border-radius: 4px;
                     width: 0;
                     transition: width 0.2s ease-in-out;
@@ -301,6 +317,114 @@
 
                     &.swap {
                         background-color: rgba(54, 162, 235, 1);
+                    }
+                }
+            }
+        }
+
+        .disk-info {
+            height: 180px;
+            padding: 8px 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+
+            .disk-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2px;
+
+                .disk-label {
+                    font-size: 13px;
+                    margin-bottom: 2px;
+
+                    span {
+                        margin-right: 10px;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+
+                }
+
+                .disk-bar {
+                    width: 100%;
+                    height: 100%;
+                    background-color: #e4e4e4;
+                    border-radius: 4px;
+                    position: relative;
+
+                    .disk-bar-body {
+                        height: 100%;
+                        position: relative;
+                        border-radius: 4px;
+                        width: 0;
+                        transition: width 0.2s ease-in-out;
+                    }
+
+                    .disk-usage {
+                        font-size: 12px;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        right: 8px;
+                        margin: auto;
+                        line-height: 1;
+                        height: 12px;
+                        color: #33373B;
+                        font-weight: 500;
+                    }
+                }
+
+                &:nth-child(1) {
+                    .disk-label {
+                        color: #e84118;
+                    }
+
+                    .disk-bar-body {
+                        background-color: #e84118;
+                    }
+                }
+
+                &:nth-child(2) {
+                    .disk-label {
+                        color: #fbc531;
+                    }
+
+                    .disk-bar-body {
+                        background-color: #fbc531;
+                    }
+                }
+
+                &:nth-child(3) {
+                    .disk-label {
+                        color: #00a8ff;
+                    }
+
+                    .disk-bar-body {
+                        background-color: #00a8ff;
+                    }
+                }
+
+                &:nth-child(4) {
+                    .disk-label {
+                        color: #6D214F;
+                    }
+
+                    .disk-bar-body {
+                        background-color: #6D214F;
+                    }
+                }
+
+                &:nth-child(5) {
+                    .disk-label {
+                        color: #2ed573;
+                    }
+
+                    .disk-bar-body {
+                        background-color: #2ed573;
                     }
                 }
             }

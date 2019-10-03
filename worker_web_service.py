@@ -17,7 +17,6 @@ def stat_info():
     return jsonify({
         "system": {
             "disk": system.get_disk_info(),
-            "disk_usage": system.get_disk_usage_info(),
             "cpu": system.get_cpu_info(),
             "memory": system.get_memory_info(),
             "swap": system.get_swap_info(),

@@ -43,17 +43,6 @@ def get_disk_info():
     } for d in psutil.disk_partitions(all=False)]
 
 
-def get_disk_usage_info():
-    d = psutil.disk_io_counters(perdisk=True)
-    return [{
-        "disk": k,
-        "read_count": d.get(k).read_count,
-        "write_count": d.get(k).write_count,
-        "read_bytes": d.get(k).read_bytes,
-        "write_bytes": d.get(k).write_bytes,
-    } for k in d.keys()]
-
-
 def get_cpu_info():
     return {
         "core_count": psutil.cpu_count(logical=False),
