@@ -20,6 +20,8 @@
 </template>
 
 <script>
+    import Chart from "chart.js";
+
     import Card from "./Card.vue";
     import CardTitle from "./CardTitle";
     import Square from "./Square";

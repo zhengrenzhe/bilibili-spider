@@ -3,6 +3,7 @@
         <cpu/>
         <network/>
         <memory/>
+        <disk/>
     </div>
 </template>
 
@@ -10,6 +11,7 @@
     import Cpu from "../components/Cpu";
     import Network from "../components/Network";
     import Memory from "../components/Memory";
+    import Disk from "../components/Disk";
 
     export default {
         name: "Monitor",
@@ -17,6 +19,7 @@
             Cpu,
             Network,
             Memory,
+            Disk,
         },
     };
 </script>

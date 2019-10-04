@@ -1,7 +1,7 @@
 <template>
     <card>
         <card-title>Memory</card-title>
-        <div :class="`item ${m.type}`" v-for="m in memory">
+        <div :class="`item ${m.type}`" v-for="m in memory" :key="m.name">
             <div class="title">{{m.name}}</div>
             <div class="total">
                 <div :style="{width: m['percent']}" class="percent"></div>
@@ -13,10 +13,7 @@
 <script>
     import Card from "./Card.vue";
     import CardTitle from "./CardTitle";
-
-    function toGBSize(size) {
-        return `${(size / Math.pow(1024, 3) || 0).toFixed(2)}GB`;
-    }
+    import {toGBSize} from "../utils";
 
     export default {
         name: "Memory",
