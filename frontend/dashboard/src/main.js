@@ -11,11 +11,12 @@ import {
     faLongArrowAltDown,
     faLongArrowAltUp,
     faRobot,
+    faServer,
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
-library.add(faUserSecret, faCertificate, faRobot, faChartBar, faBolt, faLongArrowAltUp, faLongArrowAltDown);
+library.add(faUserSecret, faCertificate, faRobot, faChartBar, faBolt, faLongArrowAltUp, faLongArrowAltDown, faServer);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

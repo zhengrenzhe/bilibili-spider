@@ -43,6 +43,9 @@
     }
 
     #router-view {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
         flex: 1;
         overflow: auto;
     }

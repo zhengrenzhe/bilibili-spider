@@ -33,3 +33,4 @@ setInterval(async () => {
 }, 1000);
 
 export default Store;
+export {API_BASE};

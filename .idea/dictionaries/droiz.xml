@@ -2,8 +2,10 @@
   <dictionary name="droiz">
     <words>
       <w>axios</w>
+      <w>backoff</w>
       <w>bilbili</w>
       <w>rabbitmq</w>
+      <w>statename</w>
     </words>
   </dictionary>
 </component>

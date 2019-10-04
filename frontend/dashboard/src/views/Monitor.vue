@@ -4,6 +4,7 @@
         <network/>
         <memory/>
         <disk/>
+        <processes/>
     </div>
 </template>
 
@@ -12,6 +13,7 @@
     import Network from "../components/Network";
     import Memory from "../components/Memory";
     import Disk from "../components/Disk";
+    import Processes from "../components/Processes";
 
     export default {
         name: "Monitor",
@@ -20,6 +22,7 @@
             Network,
             Memory,
             Disk,
+            Processes,
         },
     };
 </script>
