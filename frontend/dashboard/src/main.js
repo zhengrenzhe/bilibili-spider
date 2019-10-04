@@ -4,10 +4,18 @@ import router from "./router";
 import store from "./store";
 
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {faBolt, faCertificate, faChartBar, faRobot, faUserSecret} from "@fortawesome/free-solid-svg-icons";
+import {
+    faBolt,
+    faCertificate,
+    faChartBar,
+    faLongArrowAltDown,
+    faLongArrowAltUp,
+    faRobot,
+    faUserSecret,
+} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
-library.add(faUserSecret, faCertificate, faRobot, faChartBar, faBolt);
+library.add(faUserSecret, faCertificate, faRobot, faChartBar, faBolt, faLongArrowAltUp, faLongArrowAltDown);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -1,16 +1,19 @@
 <template>
     <div id="monitor">
         <cpu/>
+        <network/>
     </div>
 </template>
 
 <script>
     import Cpu from "../components/Cpu";
+    import Network from "../components/Network";
 
     export default {
         name: "Monitor",
         components: {
             Cpu,
+            Network,
         },
     };
 </script>

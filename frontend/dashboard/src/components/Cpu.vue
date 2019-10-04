@@ -8,9 +8,9 @@
                 {{system["cpu"]["total_percent"]}}%
             </span>
         </card-title>
-        <div class="chart">
+        <square>
             <canvas id="cpu-chart-root" width="180" height="180"></canvas>
-        </div>
+        </square>
     </card>
 </template>
 
@@ -18,12 +18,14 @@
     import Chart from "chart.js";
     import Card from "./Card.vue";
     import CardTitle from "./CardTitle";
+    import Square from "./Square";
 
     export default {
         name: "Cpu",
         components: {
             Card,
             CardTitle,
+            Square,
         },
         computed: {
             system() {
@@ -87,16 +89,6 @@
     .total_percent {
         margin-left: 10px;
         font-size: 20px;
-    }
-
-    .chart {
-        position: relative;
-
-        &:before {
-            content: "";
-            padding-top: 100%;
-            display: block;
-        }
     }
 
     #cpu-chart-root {
