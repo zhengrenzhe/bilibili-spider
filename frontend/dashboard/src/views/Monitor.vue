@@ -2,18 +2,21 @@
     <div id="monitor">
         <cpu/>
         <network/>
+        <memory/>
     </div>
 </template>
 
 <script>
     import Cpu from "../components/Cpu";
     import Network from "../components/Network";
+    import Memory from "../components/Memory";
 
     export default {
         name: "Monitor",
         components: {
             Cpu,
             Network,
+            Memory,
         },
     };
 </script>
