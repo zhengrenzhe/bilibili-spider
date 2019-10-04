@@ -36,7 +36,19 @@
     }
 
     .link {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+        font-size: 14px;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
     }
 
     a {
