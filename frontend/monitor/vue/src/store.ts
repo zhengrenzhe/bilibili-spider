@@ -9,13 +9,14 @@ const API_BASE = "http://localhost:3000";
 const Store = new Vuex.Store({
     state: {
         stat: {},
-        stats: [],
+        videos_count: 0,
     },
     mutations: {
         update_stat(state, newStat) {
-            // @ts-ignore
-            state.stats.push(JSON.parse(JSON.stringify(state.stat)));
             state.stat = { ...newStat };
+        },
+        update_videos_count(state, newCount) {
+            state.videos_count = newCount;
         },
     },
 });
@@ -23,6 +24,12 @@ const Store = new Vuex.Store({
 setInterval(() => {
     axios.get(`${ API_BASE }/stat_info`).then((res) => {
         Store.commit("update_stat", res.data);
+    });
+}, 1000);
+
+setInterval(() => {
+    axios.get(`${ API_BASE }/videos_count`).then((res) => {
+        Store.commit("update_videos_count", res.data.count);
     });
 }, 1000);
 

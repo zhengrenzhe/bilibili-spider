@@ -1,10 +1,17 @@
 <template>
-    <div class="count"></div>
+    <div class="count">
+        <div class="title">Videos {{count}}</div>
+    </div>
 </template>
 
 <script>
     export default {
         name: "Count",
+        computed: {
+            count() {
+                return this.$store.state.videos_count;
+            },
+        },
     };
 </script>
 
@@ -15,5 +22,9 @@
         background-color: #fff;
         border-radius: 4px;
         padding: 10px 16px;
+    }
+
+    .title {
+        font-size: 18px;
     }
 </style>

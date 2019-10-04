@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
+from infrastructure import postgres
 from reports import spider, system
 
 app = Flask(__name__)
@@ -9,7 +10,14 @@ CORS(app)
 
 @app.route("/")
 def index():
-    return "index"
+    return "api server index"
+
+
+@app.route("/videos_count")
+def videos_count():
+    return jsonify({
+        "count": postgres.video.get_videos_count()
+    })
 
 
 @app.route("/stat_info")

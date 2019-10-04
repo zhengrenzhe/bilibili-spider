@@ -7,6 +7,16 @@ conn = postgres.CONN
 cur = postgres.CUR
 
 
+def get_videos_count():
+    cur.execute(
+        """
+        SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = 'videos';
+        """
+    )
+    results = cur.fetchone()
+    return results[0]
+
+
 def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: str,
                        upload_time: datetime, author_name: str, author_id: int, tags: List[str],
                        duration: int, cover_url: str):

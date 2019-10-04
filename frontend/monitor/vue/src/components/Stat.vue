@@ -199,6 +199,9 @@
         },
         created() {
             this.$store.subscribe((_, state) => {
+                if (!state.stat.system) {
+                    return;
+                }
                 this.cpuChart.data.labels = Array(state.stat.system["cpu"]["percent"].length).fill(1);
                 this.cpuChart.data.datasets[0].data = state.stat.system["cpu"]["percent"];
 
