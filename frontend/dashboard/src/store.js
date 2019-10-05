@@ -6,7 +6,17 @@ import cfg from "../../../services.json";
 
 Vue.use(Vuex);
 
-const API_BASE = `http://${cfg["dashboard-api"].host}:${cfg["dashboard-api"].port}`;
+let host, port;
+
+if (process.env.ENV === "dev") {
+    host = cfg["dashboard-api-dev"].host;
+    port = cfg["dashboard-api-dev"].port;
+} else {
+    host = cfg["dashboard-api-prod"].host;
+    port = cfg["dashboard-api-prod"].port;
+}
+
+const API_BASE = `http://${host}:${port}`;
 
 const Store = new Vuex.Store({
     state: {
