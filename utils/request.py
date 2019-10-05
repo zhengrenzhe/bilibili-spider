@@ -95,3 +95,7 @@ def api_get(url: str):
     except requests.exceptions.RequestException as err:
         log.error(log.TARGET_HTTP, "API network error", {"url": url, "error": str(err)})
         return False, "Proxy Error"
+
+    except json.JSONDecodeError as err:
+        log.error(log.TARGET_OTHER, "JSON Parse error", {"url": url, "error": str(err)})
+        return False, "JSON Error"
