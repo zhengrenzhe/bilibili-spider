@@ -1,7 +1,7 @@
-from infrastructure import postgres
+from infrastructure.postgres.connect import CONN, CUR
 
-conn = postgres.CONN
-cur = postgres.CUR
+conn = CONN
+cur = CUR
 
 
 def create_author_item(author_id: int, author_name: str, intro: str, avatar: str, sex: str, level: str, birthday: str):

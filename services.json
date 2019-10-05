@@ -1,0 +1,34 @@
+{
+  "dashboard-api": {
+    "host": "127.0.0.1",
+    "port": 4000
+  },
+  "dashboard-front-end-dev": {
+    "host": "127.0.0.1",
+    "port": 8000
+  },
+  "dashboard-front-end-prod": {
+    "host": "127.0.0.1",
+    "port": 4002
+  },
+  "elk": {
+    "host": "127.0.0.1",
+    "port": "5044"
+  },
+  "rabbitmq": {
+    "host": "127.0.0.1",
+    "port": "5672"
+  },
+  "rabbitmq-api": {
+    "host": "127.0.0.1",
+    "port": "15672"
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": "6379"
+  },
+  "postgres": {
+    "host": "127.0.0.1",
+    "port": "5432"
+  }
+}

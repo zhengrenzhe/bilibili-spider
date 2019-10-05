@@ -1,10 +1,12 @@
 import pika
 
 from infrastructure import log
+from utils.cfg import get_cfg
 
 
 def open_connection():
-    conn = pika.BlockingConnection(pika.ConnectionParameters(host="rabbit-service"))
+    conn = pika.BlockingConnection(
+        pika.ConnectionParameters(host=get_cfg("rabbitmq.host"), port=get_cfg("rabbitmq.port")))
     chan = conn.channel()
 
     chan.queue_declare(queue='video_urls', durable=True, arguments={

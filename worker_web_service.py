@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from infrastructure import postgres
 from reports import spider, system
+from utils.cfg import get_cfg
 
 app = Flask(__name__)
 CORS(app)
@@ -80,4 +81,4 @@ def stop_all_processes():
     })
 
 
-app.run("0.0.0.0", 3000, __name__ == "__main__")
+app.run(get_cfg("dashboard-api.host"), get_cfg("dashboard-api.port"), __name__ == "__main__")

@@ -1,20 +1,21 @@
 from datetime import datetime
 from typing import List
 
-from infrastructure import log, postgres
+from infrastructure import log
+from infrastructure.postgres.connect import CONN, CUR
 
-conn = postgres.CONN
-cur = postgres.CUR
+conn = CONN
+cur = CUR
 
 
 def get_videos_count():
     cur.execute(
         """
-        SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = 'videos';
+        SELECT reltuples::decimal FROM pg_class WHERE relname = 'videos';
         """
     )
     results = cur.fetchone()
-    return results[0]
+    return int(results[0])
 
 
 def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: str,

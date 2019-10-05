@@ -2,9 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
+import cfg from "../../../services.json";
+
 Vue.use(Vuex);
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = `http://${cfg["dashboard-api"].host}:${cfg["dashboard-api"].port}`;
 
 const Store = new Vuex.Store({
     state: {

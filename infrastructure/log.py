@@ -4,8 +4,10 @@ from typing import Dict
 import logstash
 from termcolor import colored
 
+from utils.cfg import get_cfg
+
 logger = logging.getLogger("bilibili")
-logger.addHandler(logstash.TCPLogstashHandler(host="elk-inside-service", port=5044))
+logger.addHandler(logstash.TCPLogstashHandler(host=get_cfg("elk.host"), port=get_cfg("elk.port")))
 logger.setLevel(logging.DEBUG)
 
 TARGET_DATABASE = "Database"
