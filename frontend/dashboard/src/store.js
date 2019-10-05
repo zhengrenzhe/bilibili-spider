@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 let host, port;
 
-if (process.env.ENV === "prod") {
+if (window.env === "prod") {
     host = cfg["dashboard-api-prod"].host;
     port = cfg["dashboard-api-prod"].port;
 } else {
