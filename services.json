@@ -9,7 +9,11 @@
   },
   "dashboard-front-end-prod": {
     "host": "127.0.0.1",
-    "port": 4002
+    "port": 9000
+  },
+  "supervisor-rpc": {
+    "host": "127.0.0.1",
+    "port": 6000
   },
   "elk": {
     "host": "127.0.0.1",

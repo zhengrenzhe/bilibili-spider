@@ -1,6 +1,8 @@
 from xmlrpc.client import ServerProxy, Fault
 
-server = ServerProxy("http://localhost:9001/RPC2")
+from utils.cfg import get_cfg
+
+server = ServerProxy("http://%s:%s/RPC2" % (get_cfg("supervisor-rpc.host"), get_cfg("supervisor-rpc.port")))
 
 
 def get_supervisor_info():
