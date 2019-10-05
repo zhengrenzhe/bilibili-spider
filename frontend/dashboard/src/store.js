@@ -8,12 +8,12 @@ Vue.use(Vuex);
 
 let host, port;
 
-if (process.env.ENV === "dev") {
-    host = cfg["dashboard-api-dev"].host;
-    port = cfg["dashboard-api-dev"].port;
-} else {
+if (process.env.ENV === "prod") {
     host = cfg["dashboard-api-prod"].host;
     port = cfg["dashboard-api-prod"].port;
+} else {
+    host = cfg["dashboard-api-dev"].host;
+    port = cfg["dashboard-api-dev"].port;
 }
 
 const API_BASE = `http://${host}:${port}`;

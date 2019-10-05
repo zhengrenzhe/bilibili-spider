@@ -1,6 +1,6 @@
 {
   "dashboard-api-dev": {
-    "host": "127.0.0.1",
+    "host": "localhost",
     "port": 4000
   },
   "dashboard-api-prod": {

@@ -133,7 +133,7 @@
 
         .group {
             width: 300px;
-            margin: 0 10px;
+            margin: 0 10px 20px;
             box-shadow: 0 0 2px 0 #c3c3c3;
             padding: 10px;
             border-radius: 4px;
