@@ -5,17 +5,25 @@
             <div class="count">
                 Total: {{count}} videos
             </div>
+            <div class="ctrl">
+                <button @click="changeTime('5d')" :disabled="current === '5d'">5 days</button>
+                <button @click="changeTime('1h')" :disabled="current === '1h'">1 hour</button>
+                <button @click="changeTime('5m')" :disabled="current === '5m'">5 minutes</button>
+            </div>
         </card-title>
-        <canvas id="count-chart"></canvas>
+        <iframe :src="currentUrl"></iframe>
     </card>
 </template>
 
 <script>
     import Card from "./Card";
     import CardTitle from "./CardTitle";
-    import Chart from "chart.js";
 
-    const now = Date.now();
+    const urlMap = {
+        "5d": "http://172.21.0.10:5601/app/kibana#/visualize/edit/ce8d16d0-e46a-11e9-92d5-6d199b200d7d?embed=true&_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-5d%2Cto%3Anow))",
+        "1h": "http://172.21.0.10:5601/app/kibana#/visualize/edit/ce8d16d0-e46a-11e9-92d5-6d199b200d7d?embed=true&_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-1h%2Cto%3Anow))",
+        "5m": "http://172.21.0.10:5601/app/kibana#/visualize/edit/ce8d16d0-e46a-11e9-92d5-6d199b200d7d?embed=true&_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-5m%2Cto%3Anow))",
+    };
 
     export default {
         name: "Count",
@@ -25,78 +33,19 @@
         },
         data() {
             return {
-                count: 0,
-                counts: [],
+                current: "5d",
+                currentUrl: urlMap["5d"],
             };
         },
-        mounted() {
-            this.countChart = new Chart(document.getElementById("count-chart").getContext("2d"), {
-                type: "bar",
-                data: {
-                    datasets: [
-                        {
-                            borderColor: "#e74c3c",
-                            data: Array(60).fill(0).map((_, i) => ({
-                                y: null,
-                                t: new Date(now - (1000 * i)),
-                            })),
-                            type: "line",
-                            pointRadius: 0,
-                            fill: false,
-                            borderWidth: 2,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false,
-                    },
-                    animation: {
-                        duration: 0,
-                    },
-                    layout: {
-                        padding: {
-                            top: 2,
-                            bottom: 2,
-                        },
-                    },
-                    scales: {
-                        xAxes: [{
-                            // display: false,
-                            type: "time",
-                            distribution: "series",
-                            ticks: {
-                                source: "data",
-                                autoSkip: true,
-                            },
-                        }],
-                        yAxes: [{
-                            // display: false,
-                        }],
-                    },
-                },
-            });
-
-            this.$store.subscribe((_, state) => {
-                if (!state.video_count) {
-                    return;
-                }
-
-                this.countChart.data.datasets[0].data = this.appendTimeSeries({
-                    y: state.video_count,
-                    t: new Date(),
-                });
-
-                this.countChart.update();
-            });
+        computed: {
+            count() {
+                return this.$store.state.video_count;
+            },
         },
         methods: {
-            appendTimeSeries(newData) {
-                const s = this.countChart.data.datasets[0].data.slice(1);
-                s.push(newData);
-                return s;
+            changeTime(newTime) {
+                this.current = newTime;
+                this.currentUrl = urlMap[newTime];
             },
         },
     };
@@ -106,5 +55,21 @@
     .count {
         margin-left: 10px;
         font-size: 20px;
+    }
+
+    iframe {
+        border: none;
+        width: 100%;
+        height: 300px;
+    }
+
+    .ctrl {
+        display: flex;
+        margin-left: auto;
+
+        button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
     }
 </style>
