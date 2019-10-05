@@ -81,4 +81,4 @@ def stop_all_processes():
     })
 
 
-app.run(get_cfg("dashboard-api-dev.host"), get_cfg("dashboard-api-dev.port"), __name__ == "__main__")
+app.run("0.0.0.0", get_cfg("dashboard-api-dev.port"), __name__ == "__main__")
