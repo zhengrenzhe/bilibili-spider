@@ -6,6 +6,7 @@
       <w>bilbili</w>
       <w>rabbitmq</w>
       <w>statename</w>
+      <w>unacked</w>
     </words>
   </dictionary>
 </component>
