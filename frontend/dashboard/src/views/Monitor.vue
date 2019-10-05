@@ -1,6 +1,7 @@
 <template>
     <div id="monitor">
         <count/>
+        <queue/>
         <cpu/>
         <network/>
         <memory/>
@@ -16,6 +17,7 @@
     import Disk from "../components/Disk";
     import Processes from "../components/Processes";
     import Count from "../components/Count";
+    import Queue from "../components/Queue";
 
     export default {
         name: "Monitor",
@@ -26,6 +28,7 @@
             Disk,
             Processes,
             Count,
+            Queue,
         },
     };
 </script>

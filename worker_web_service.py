@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 from infrastructure import postgres
-from reports import spider, system
+from reports import spider, system, queue
 from utils.cfg import get_cfg
 
 app = Flask(__name__)
@@ -37,6 +37,11 @@ def stat_info():
             "worker": spider.get_processes_info()
         }
     })
+
+
+@app.route("/queue_info")
+def queue_info():
+    return jsonify(queue.get_queue())
 
 
 @app.route("/start_process/<name>")
