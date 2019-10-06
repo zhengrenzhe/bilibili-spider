@@ -23,7 +23,7 @@
                 <td>{{q["messages_unacknowledged"]}}</td>
                 <td>{{q["message_stats"]["publish_details"]["rate"]}}/s</td>
                 <td>{{q["message_stats"]["ack_details"]["rate"]}}/s</td>
-                <td>
+                <td class="priority-block">
                     <div v-for="(p, l, i) in q['backing_queue_status']['priority_lengths']" :key="i">
                         <div v-if="p !== 0" class="priority">
                             <div class="label">{{l}}</div>
@@ -109,6 +109,7 @@
         border-radius: 4px;
         padding: 3px;
         font-size: 14px;
+        margin-right: 14px;
 
         .label {
             position: absolute;
@@ -128,5 +129,9 @@
         .count {
             padding: 0 4px;
         }
+    }
+
+    .priority-block {
+        display: flex;
     }
 </style>
