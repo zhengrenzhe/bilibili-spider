@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 
 import lxml.html
 
@@ -53,5 +54,8 @@ def daily_job():
     log.info(log.TARGET_DAILY_PAGER, "Fetching new list finished")
 
 
-if __name__ == "__main__":
-    daily_job()
+while True:
+    if redis.Context.daily_pager_index == 0:
+        daily_job()
+
+    time.sleep(60)
