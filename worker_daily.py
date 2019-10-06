@@ -55,7 +55,5 @@ def daily_job():
 
 
 while True:
-    if redis.Context.daily_pager_index == 0:
-        daily_job()
-
+    daily_job()
     time.sleep(60)
