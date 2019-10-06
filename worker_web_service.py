@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from infrastructure import postgres
+from infrastructure import redis
 from reports import spider, system, queue
 from utils.cfg import get_cfg
 
@@ -17,7 +17,7 @@ def index():
 @app.route("/videos_count")
 def videos_count():
     return jsonify({
-        "count": postgres.video.get_videos_count()
+        "count": redis.Context.videos_count
     })
 
 

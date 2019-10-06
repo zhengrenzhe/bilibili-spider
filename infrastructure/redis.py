@@ -27,6 +27,14 @@ class _Context:
     def daily_pager_index(self, new_index):
         update("daily_pager_index", new_index)
 
+    @property
+    def videos_count(self):
+        return int(get("videos_count") or 0)
+
+    @videos_count.setter
+    def videos_count(self, new_count):
+        update("videos_count", new_count)
+
     @staticmethod
     def is_visited(key=""):
         return visited_db.get(key) == b'1'

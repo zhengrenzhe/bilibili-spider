@@ -1,21 +1,11 @@
 from datetime import datetime
 from typing import List
 
-from infrastructure import log
+from infrastructure import log, redis
 from infrastructure.postgres.connect import CONN, CUR
 
 conn = CONN
 cur = CUR
-
-
-def get_videos_count():
-    cur.execute(
-        """
-        SELECT reltuples::decimal FROM pg_class WHERE relname = 'videos';
-        """
-    )
-    results = cur.fetchone()
-    return int(results[0])
 
 
 def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: str,
@@ -35,6 +25,7 @@ def create_videos_item(vid: int, title: str, ptype: str, ctype: str, describe: s
         conn.rollback()
     else:
         log.info(log.TARGET_DATABASE, "Write db:videos_item success", {"vid": vid})
+        redis.Context.videos_count += 1
         conn.commit()
 
 
