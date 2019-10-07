@@ -39,6 +39,18 @@ def stat_info():
     })
 
 
+@app.route("/system_info")
+def system_info():
+    return {
+        "disk": system.get_disk_info(),
+        "cpu": system.get_cpu_info(),
+        "memory": system.get_memory_info(),
+        "swap": system.get_swap_info(),
+        "network": system.get_network_info(),
+        "boot_time": system.get_boot_time(),
+    }
+
+
 @app.route("/queue_info")
 def queue_info():
     return jsonify(queue.get_queue())

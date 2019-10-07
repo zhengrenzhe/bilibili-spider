@@ -8,6 +8,8 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/client/dashboard/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/client/dashboard/build" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/monitor/angular/dist" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/monitor/angular/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
