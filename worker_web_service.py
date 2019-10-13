@@ -51,6 +51,13 @@ def system_info():
     }
 
 
+@app.route("/processes_info")
+def processes_info():
+    return {
+        "worker": spider.get_processes_info()
+    }
+
+
 @app.route("/queue_info")
 def queue_info():
     return jsonify(queue.get_queue())
