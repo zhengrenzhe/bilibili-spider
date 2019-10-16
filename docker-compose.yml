@@ -38,3 +38,10 @@ services:
     volumes:
       - "./config/logstash:/etc/logstash"
       - "elk-data-vol:/var/lib/elasticsearch"
+
+volumes:
+  elk-data-vol:
+    driver: local
+    driver_opts:
+      type: ext4
+      device: /root/data/elk-data
