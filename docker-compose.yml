@@ -37,4 +37,4 @@ services:
       - "5044:5044"
     volumes:
       - "./config/logstash:/etc/logstash"
-      - "elk-data:/var/lib/elasticsearch"
+      - "elk-data-vol:/var/lib/elasticsearch"
