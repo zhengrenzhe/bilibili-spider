@@ -36,12 +36,8 @@ services:
       - "9300:9300"
       - "5044:5044"
     volumes:
-      - type: volume
-        source: "./config/logstash"
-        target: "/etc/logstash"
-      - type: volume
-        source: "elk-data-vol"
-        target: "/var/lib/elasticsearch"
+      - "./config/logstash:/etc/logstash"
+      - "elk-data-vol:/var/lib/elasticsearch"
 
 volumes:
   elk-data-vol:
